@@ -56,15 +56,23 @@
 				<section>
 					<div class="content">
 						<header>
-							<!-- <a href="#" class="icon fa-vcard-o"><span class="label">Icon</span></a> -->
-							<h3><b>GDP</b></h3>
+							<h3><b>S&P 500 earnings</b></h3>
 						</header>
-						<p>Annual US GDP growth</p>
-							<div class="button primary fit small slidecontainer">
-								<p>Slider:</p>
-								<input type="range" min="1" max="100" value="50">
+						<p>2021 % growth (vs. 2019):</p>
+						<form id="form1" onchange="chartFVEXE(); return false">
+							<div class="range-wrap" style="width: 55%;">
+								<input type="range" class="range" min="-20" max="20">
+								<output class="bubble"></output>
+							</div>
+						</form>
+						<button class="button primary fit small collapsible">Details</button>
+						<div class="contentCollapse">
+							<div class="image fit img zoomin">
+								<img src="images/Earnings.png" alt="" />
+							</div>
+							<!-- <div class="zoom"></div> -->
+						</div>
 					</div>
-					<!-- <a href="#" type="slider" class="button primary fit small">Fit + Small</a> -->
 				</section>
 				<section>
 					<div class="content">
@@ -72,8 +80,7 @@
 							<a href="#" class="icon fa-files-o"><span class="label">Icon</span></a>
 							<h3>Ante sem integer</h3>
 						</header>
-						<p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non
-							mi integer non faucibus.</p>
+						<p>Nunc lacinia </p>
 					</div>
 				</section>
 				<section>
@@ -82,8 +89,7 @@
 							<a href="#" class="icon fa-floppy-o"><span class="label">Icon</span></a>
 							<h3>Ipsum consequat</h3>
 						</header>
-						<p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non
-							mi integer non faucibus.</p>
+						<p>Nunc </p>
 					</div>
 				</section>
 				<section>
@@ -231,6 +237,7 @@
 	<script src="assets/js/breakpoints.min.js"></script>
 	<script src="assets/js/util.js"></script>
 	<script src="assets/js/main.js"></script>
+	<script src="assets/js/slider.js"></script>
 
 </body>
 

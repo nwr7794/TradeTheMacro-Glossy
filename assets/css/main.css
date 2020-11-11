@@ -1,4 +1,5 @@
 @import url(font-awesome.min.css);
+@import url(add-ons.css);
 @import url("https://fonts.googleapis.com/css?family=Raleway:200,300,400,500,600");
 /*
 	Industrious by TEMPLATED
@@ -710,7 +711,7 @@ table.alt tbody tr td {
   @media screen and (max-width: 980px) {
     .highlights > * {
       width: 50%; }
-    .highlights > * {
+    .highlights > * { 
       padding: 1rem;
       width: calc(33.3333333333% + 0.6666666667rem); }
     .highlights > :nth-child(-n + 3) {
