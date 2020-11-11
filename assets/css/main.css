@@ -1780,8 +1780,9 @@ ul.icons {
       width: 100%; }
 
 /* Wrapper */
+/* padding: 8rem 0 6rem 0 ;  */
 .wrapper {
-  padding: 8rem 0 6rem 0 ;
+  padding: 4rem 0 4rem 0 ; 
   position: relative;
   z-index: 1; }
   @media screen and (max-width: 1280px) {
