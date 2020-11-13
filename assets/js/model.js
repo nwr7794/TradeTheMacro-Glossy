@@ -61,8 +61,8 @@ function initialConditions() {
             //Find average of JSON data
             var sum = 0
             var count = 0
-            for (i = 0; i < data_array.rows.length; i++){
-                if (data_array.rows[i]["c"][9] != null ){
+            for (i = 0; i < data_array.rows.length; i++) {
+                if (data_array.rows[i]["c"][9] != null) {
                     count = count + 1
                     sum = sum + data_array.rows[i]["c"][9]["v"]
                 }
@@ -83,13 +83,13 @@ function initialConditions() {
     }
 
     // SPX earnings growth
-    setInitialAssumption('earnings_ass', 9,'average', 3);
+    setInitialAssumption('earnings_ass', 9, 'average', 3);
     // 10yr treasury yld (use last)
     setInitialAssumption('yield_ass', 2, 'last', 3);
     // Risk Index (use last) - generate HYS and ERP from Risk index
     setInitialAssumption('risk_ass', 12, 'last', 1);
     // Inflation Expectations (use last)
-    setInitialAssumption('inflation_ass',5,'last',4);
+    setInitialAssumption('inflation_ass', 5, 'last', 4);
     // Portfolio concentration (Use balanced)
     document.getElementById('concentration_ass_head').innerHTML = '<label for="Predictor">Portfolio Concentration: </label><input type="range" class="range" min="1" max="5" step="1" value="3" id="concentration_ass"><output class="bubble"></output><br>';
     // Time Horizon (1 year)
@@ -99,13 +99,15 @@ function initialConditions() {
     spx_fv_func();
     gold_fv_func();
     commods_fv_func();
+    treasury_fv_func();
+    highYield_fv_func();
 
 }
 
-function spx_fv_func(){
+function spx_fv_func() {
     // S&P500 FV - Inputs: earnings, treasury yield, ERP
     var risk_ass = parseFloat(document.getElementById('risk_ass').value)
-    var erp_ass = risk_ass * data_raw.getValue(1,11) + data_raw.getValue(0,11)
+    var erp_ass = risk_ass * data_raw.getValue(1, 11) + data_raw.getValue(0, 11)
     var earnings_2019 = 139.47; //Hardcoding in 2019 earnings right now
     var earnings_growth_ass = (1 + parseFloat(document.getElementById('earnings_ass').value)) ** parseFloat(document.getElementById('time_ass').value)
     var earnings_abs_ass = earnings_2019 * earnings_growth_ass
@@ -114,37 +116,56 @@ function spx_fv_func(){
     console.log(spx_fv)
 }
 
-function gold_fv_func(){
+function gold_fv_func() {
     // Gold FV - Inputs: treasury yield, inflation expec (1 yr regression)
     var yield_ass = parseFloat(document.getElementById('yield_ass').value)
     var inflation_ass = parseFloat(document.getElementById('inflation_ass').value)
-    gold_fv = data_raw.getValue(0,13) * (yield_ass - inflation_ass) + data_raw.getValue(1,13)
+    gold_fv = data_raw.getValue(0, 13) * (yield_ass - inflation_ass) + data_raw.getValue(1, 13)
     console.log(gold_fv)
 }
 
-//Need the bond math //////////////////////// Left off HERE /////////////////////
-function treasury_fv_func(){
+function treasury_fv_func() {
     // 10yr treasury FV - Inputs: treasury yield, time
+    //Assuming the current yield is the coupon rate and the bond is priced at par. Also not considering the discount rate
+    //Also assuming you are buying a 10yr bond at inception that pays annual coupons
+    //Ref: https://financeformulas.net/Yield_to_Maturity.html
+    var par = 100;
+    var coupon = data_raw.getValue(data_raw.getNumberOfRows() - 1, 2)
     var yield_ass = parseFloat(document.getElementById('yield_ass').value)
+    var time_ass = parseFloat(document.getElementById('time_ass').value)
+    var future_price = (2 * par + 2 * (10 - time_ass) * coupon * par - (10 - time_ass) * yield_ass * par) / ((10 - time_ass) * yield_ass + 2)
+    var treasury_fv = future_price + par * coupon * time_ass
+    console.log(treasury_fv)
 }
 
-//Need the bond math
-function highYield_fv_func(){
+function highYield_fv_func() {
     // High Yield FV - Inputs: treasury yield, HYS, time
-    var yield_ass = parseFloat(document.getElementById('yield_ass').value)
+    //Assuming the current yield is the coupon rate and the bond is priced at par. Also not considering the discount rate
+    //Also assuming you are buying a 10yr bond at inception that pays annual coupons
+    //Ref: https://financeformulas.net/Yield_to_Maturity.html
+    var treasury_ass = parseFloat(document.getElementById('yield_ass').value)
     var risk_ass = parseFloat(document.getElementById('risk_ass').value)
-    var hys_ass = risk_ass * data_raw.getValue(3,11) + data_raw.getValue(2,11)
+    var hys_ass = risk_ass * data_raw.getValue(3, 11) + data_raw.getValue(2, 11)
+    var yield_ass = treasury_ass + hys_ass
+
+    var par = 100;
+    var coupon = data_raw.getValue(data_raw.getNumberOfRows() - 1, 2) + data_raw.getValue(data_raw.getNumberOfRows() - 1, 10)
+    var time_ass = parseFloat(document.getElementById('time_ass').value)
+    var future_price = (2 * par + 2 * (10 - time_ass) * coupon * par - (10 - time_ass) * yield_ass * par) / ((10 - time_ass) * yield_ass + 2)
+    var highYield_fv = future_price + par * coupon * time_ass
+    console.log(highYield_fv)
+    /////////////////////////////////////////// This should be working - need to add credit spread assumption adjustment ///////////////////////////////////////
 }
 
-function commods_fv_func(){
+function commods_fv_func() {
     // Commodities FV - Inputs: inflation expectations (2016 on rgeression)
     var inflation_ass = parseFloat(document.getElementById('inflation_ass').value)
-    commods_fv = data_raw.getValue(0,14) * inflation_ass + data_raw.getValue(1,14)
+    commods_fv = data_raw.getValue(0, 14) * inflation_ass + data_raw.getValue(1, 14)
     console.log(commods_fv)
 }
 
 
-function cash_fv_func(){
+function cash_fv_func() {
     // Cash FV - Inputs: Current Money Market Rate 
     cash_fv = 1.0025; //Assuming .25% interest
     console.log(cash_fv)
@@ -153,16 +174,16 @@ function cash_fv_func(){
 
 
 function modelRun() {
-    
+
     // Asset class expected returns to calculate:
     //// S&P 500 - eventually add in sectors (maybe like assuming momentum continues, or assuming mean reversion)
     //// Gold
-    // 10 yr treasuries    ///////////////bond math to do
-    // US High yield debt
+    //// 10 yr treasuries
+    //// US High yield debt
     //// All commodities
     //// Cash
     // Bitcoin...
-    
+
 
 
 
