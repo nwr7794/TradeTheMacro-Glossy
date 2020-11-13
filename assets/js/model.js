@@ -21,7 +21,7 @@ google.charts.setOnLoadCallback(dataImport);
 function dataImport() {
 
     //Grab specific columns from data sheet
-    var queryString = encodeURIComponent("SELECT A,B,C,G,J,K,L,M,N,R,S,U");
+    var queryString = encodeURIComponent("SELECT A,B,C,G,J,K,L,M,N,R,S,T,U");
 
     var query = new google.visualization.Query(
         'https://docs.google.com/spreadsheets/d/1eABM4-XgHerB98VjVo1kVvcAl6ocGPCstMQs4bh5WEA/gviz/tq?sheet=Data&headers=1&tq=' + queryString);
@@ -79,7 +79,7 @@ function initialConditions() {
         var nominal_step = ((nominal_upper_bound - nominal_lower_bound) / 32).toFixed(round)
         var stringInput = '<label for="Predictor">' + label + ': </label><input type="range" class="range" min="' + nominal_lower_bound + '" max="' + nominal_upper_bound + '" step="' + nominal_step + '" value="' + nominal_last_val + '" id="' + assumption + '"><output class="bubble"></output><br>';
         // console.log(stringInput)
-        document.getElementById(assumption).innerHTML = stringInput
+        document.getElementById(assumption + '_head').innerHTML = stringInput
     }
 
     // SPX earnings growth
@@ -87,19 +87,57 @@ function initialConditions() {
     // 10yr treasury yld (use last)
     setInitialAssumption('yield_ass', 2, 'last', 3);
     // Risk Index (use last) - generate HYS and ERP from Risk index
-    setInitialAssumption('risk_ass', 11, 'last', 1);
+    setInitialAssumption('risk_ass', 12, 'last', 1);
     // Inflation Expectations (use last)
     setInitialAssumption('inflation_ass',5,'last',4);
     // Portfolio concentration (Use balanced)
-    document.getElementById('concentration_ass').innerHTML = '<label for="Predictor">Portfolio Concentration: </label><input type="range" class="range" min="1" max="5" step="1" value="3" id="Portfolio Concentration"><output class="bubble"></output><br>';
+    document.getElementById('concentration_ass_head').innerHTML = '<label for="Predictor">Portfolio Concentration: </label><input type="range" class="range" min="1" max="5" step="1" value="3" id="concentration_ass"><output class="bubble"></output><br>';
     // Time Horizon (1 year)
-    document.getElementById('time_ass').innerHTML = '<label for="Predictor">Time Horizon: </label><input type="range" class="range" min="1" max="5" step="2" value="1" id="Portfolio Concentration"><output class="bubble"></output><br>';
+    document.getElementById('time_ass_head').innerHTML = '<label for="Predictor">Time Horizon: </label><input type="range" class="range" min="1" max="5" step="2" value="1" id="time_ass"><output class="bubble"></output><br>';
     //Run function that makes slider work after divs are loaded
     slider_function();
+    spx_fv_func();
 
 }
 
+function spx_fv_func(){
+    // S&P500 FV - Inputs: earnings, treasury yield, ERP
+    var risk_ass = parseFloat(document.getElementById('risk_ass').value)
+    console.log(risk_ass)
+    var erp_ass = risk_ass * data_raw.getValue(1,11) + data_raw.getValue(0,11)
+    console.log(erp_ass)
+    var earnings_2019 = 139.47;
+    // console.log((1 + parseFloat(document.getElementById('earnings_ass').value)))
+    // console.log(parseFloat(document.getElementById('time_ass').value))
+    var earnings_growth_ass = (1 + parseFloat(document.getElementById('earnings_ass').value)) ** parseFloat(document.getElementById('time_ass').value)
+    console.log(earnings_growth_ass)
+    var earnings_abs_ass = earnings_2019 * earnings_growth_ass
+    var yield_ass = parseFloat(document.getElementById('yield_ass').value)
+    spx_fv = 1 / (yield_ass + erp_ass) * earnings_abs_ass
+    console.log(spx_fv)
+
+    // hys_ass = risk_ass * data_raw.getValue(3,11) + data_raw.getValue(2,11)
+
+
+}
+
+
+
 function modelRun() {
+    
+    // Asset class expected returns to calculate:
+    // S&P 500 - eventually add in sectors (maybe like assuming momentum continues, or assuming mean reversion)
+    // Inputs: earnings, treasury yield, ERP
+
+
+
+    // Gold
+    // 10 yr treasuries
+    // US High yield debt
+    // All commodities
+    // Cash
+    // Bitcoin...
+    
 
 
 
