@@ -59,12 +59,9 @@
 						<header>
 							<h3><b>S&P 500 earnings</b></h3>
 						</header>
-						<p>2021 % growth (vs. 2019):</p>
+						<p>Annual % growth (using 2019, pre-covid as baseline)</p>
 						<form id="form1" onchange="chartFVEXE(); return false">
-							<div class="range-wrap" style="width: 55%;">
-								<input type="range" class="range" min="-20" max="20">
-								<output class="bubble"></output>
-							</div>
+							<div id="earnings_ass" class="range-wrap" style="width: 55%;"></div>
 						</form>
 						<button class="button primary fit small collapsible">Details</button>
 						<div class="contentCollapse">
@@ -81,10 +78,7 @@
 							<h3><b>US 10yr Treasury Yield</b></h3>
 						</header>
 						<form id="form2" onchange="chartFVEXE(); return false">
-							<div class="range-wrap" style="width: 55%;">
-								<input type="range" class="range" min="-20" max="20">
-								<output class="bubble"></output>
-							</div>
+							<div id="yield_ass" class="range-wrap" style="width: 55%;"></div>
 						</form>
 						<button class="button primary fit small collapsible">Details</button>
 						<div class="contentCollapse">
@@ -102,13 +96,19 @@
 						</header>
 						<p>A composite index generated from the equity risk premium and high yield credit spread:</p>
 						<form id="form3" onchange="chartFVEXE(); return false">
-							<div class="range-wrap" style="width: 55%;">
-								<input type="range" class="range" min="-20" max="20">
-								<output class="bubble"></output>
-							</div>
+							<div id="risk_ass" class="range-wrap" style="width: 55%;"></div>
 						</form>
 						<button class="button primary fit small collapsible">Details</button>
 						<div class="contentCollapse">
+							<form id="form7" onchange="chartFVEXE(); return false">
+								<!-- <div id="erp_ass" class="range-wrap" style="width: 55%;"></div> -->
+							</form>
+							<div class="image fit img zoomin">
+								<img src="images/ERP.png" alt="" />
+							</div>
+							<form id="form8" onchange="chartFVEXE(); return false">
+								<!-- <div id="hys_ass" class="range-wrap" style="width: 55%;"></div> -->
+							</form>
 							<div class="image fit img zoomin">
 								<img src="images/ERP.png" alt="" />
 							</div>
@@ -123,10 +123,7 @@
 						</header>
 						<p>Market implied inflation expectations from Treasury vs. TIPS yields</p>
 						<form id="form4" onchange="chartFVEXE(); return false">
-							<div class="range-wrap" style="width: 55%;">
-								<input type="range" class="range" min="-20" max="20">
-								<output class="bubble"></output>
-							</div>
+							<div id="inflation_ass" class="range-wrap" style="width: 55%;"></div>
 						</form>
 						<button class="button primary fit small collapsible">Details</button>
 						<div class="contentCollapse">
@@ -145,10 +142,7 @@
 						<p>Your tolerance for concentrated risk in your portfolio (potentially leads to more volatility)
 						</p>
 						<form id="form5" onchange="chartFVEXE(); return false">
-							<div class="range-wrap" style="width: 55%;">
-								<input type="range" class="range" min="-20" max="20">
-								<output class="bubble"></output>
-							</div>
+							<div id="concentration_ass" class="range-wrap" style="width: 55%;"></div>
 						</form>
 					</div>
 				</section>
@@ -159,23 +153,10 @@
 							<h3><b>Investment time horizon</b></h3>
 						</header>
 						<form id="form6" onchange="chartFVEXE(); return false">
-							<div class="range-wrap" style="width: 55%;">
-								<input type="range" class="range" min="-20" max="20">
-								<output class="bubble"></output>
-							</div>
+							<div id="time_ass" class="range-wrap" style="width: 55%;"></div>
 						</form>
 					</div>
 				</section>
-				<!-- <section>
-					<div class="content">
-						<header>
-							<a href="#" class="icon fa-qrcode"><span class="label">Icon</span></a>
-							<h3>Accumsan viverra</h3>
-						</header>
-						<p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non
-							mi integer non faucibus.</p>
-					</div>
-				</section> -->
 			</div>
 		</div>
 	</section>
@@ -266,6 +247,8 @@
 	<script src="assets/js/breakpoints.min.js"></script>
 	<script src="assets/js/util.js"></script>
 	<script src="assets/js/main.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script src="assets/js/model.js"></script>
 	<script src="assets/js/slider.js"></script>
 
 </body>
