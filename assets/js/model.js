@@ -285,8 +285,6 @@ function modelRun() {
         legend: 'bottom',
         width: '100%',
         height: '100%'
-        // width: 100%, 
-        // height: 350px
     };
 
     var table_options = {
@@ -364,8 +362,9 @@ function timeEXE() {
 }
 
 
-/////////// Design stuff - test for other screen sizes as well.
+/////////// Design stuff - test for other screen sizes as well.  ///////////////// Ok for now
 /////////// FRED data scrape process for more reliable backend. Also, commods regression????....
+/////////// Fix domain name and, add scatter charts for context/adjust models?
 /////////// Once these 2 done, publish and start getting feedback.
 /////////// All of the design for the output charts
 /////////// All of the contextual visuals for the assumptions
