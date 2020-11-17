@@ -209,7 +209,7 @@ function modelRun() {
     var names_arr = [['S&P 500', 'spx'], ['Gold', 'gold'], ['US 10yr Treasury', 'treasury'], ['High Yield Debt', 'highYield'], ['Commodities ($DBC)', 'commods'], ['Cash', 'cash']]
     var time_ass = parseFloat(document.getElementById('time_ass').value)
     // Calculate expected return
-    var output_data = [['Asset', 'Exp Return', 'Last Price', 'Fair Value']]; //Need to add allocation %
+    var output_data = [['Name', 'Exp Return (ann)', 'Last', 'Value']]; //Need to add allocation %
     for (i = 0; i < names_arr.length; i++) {
         // Name, Expected Return, Last, FV
         var last = eval(names_arr[i][1] + '_last')
@@ -249,7 +249,7 @@ function modelRun() {
         return b[1] - a[1];
     });
     // console.log(output_sorted)
-    output_sorted[0].push('Allocation %')
+    output_sorted[0].push('Hold %')
     var allocated = 0;
     for (j = 1; j < output_sorted.length; j++) {
         if (output_sorted[j][0] === 'Cash') {
@@ -281,7 +281,12 @@ function modelRun() {
     chart_view.setColumns([0, 4])
 
     var chart_options = {
-        title: 'Asset Class Allocation'
+        title: 'Asset Class Allocation',
+        legend: 'bottom',
+        width: '100%',
+        height: '100%'
+        // width: 100%, 
+        // height: 350px
     };
 
     var table_options = {
@@ -289,8 +294,6 @@ function modelRun() {
         height: '100%',
         allowHtml: true
     }
-
-
 
     //Draw pie chart
     var chart = new google.visualization.PieChart(document.getElementById('donutchart'));

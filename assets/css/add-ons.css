@@ -127,13 +127,13 @@
     .modelOutput .content {
       border-radius: 4px;
       height: 100%;
-      padding: 3rem;
+      padding: 0rem; /* Was 3 */
       text-align: center; }
       .modelOutput .content .icon {
         font-size: 5rem; }
     .modelOutput > div > :last-child {
       margin-bottom: 0; }
-    @media screen and (max-width: 980px) {
+    /* @media screen and (max-width: 980px) {
       .modelOutput > * {
         width: 50%; }
       .modelOutput > * { 
@@ -166,8 +166,8 @@
       .modelOutput > :nth-child(2n) {
         width: calc(50% + 0rem); }
       .modelOutput .content {
-        padding: 2rem; } }
-    @media screen and (max-width: 736px) {
+        padding: 0rem; } } */
+    @media screen and (max-width: 980px) { /* Was 736 */
       .modelOutput > * {
         width: 100%; }
       .modelOutput > * {
