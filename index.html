@@ -48,6 +48,7 @@
 	<section class="wrapper">
 		<div class="inner">
 			<header class="special">
+				<h3>This is a BETA - <a style="color:blue" href = "mailto: tradethemacro@gmail.com"><u>Email me</u></a> with questions/comments</h3>
 				<h2>Assumptions</h2>
 				<p>Set your economic assumptions for the next year to determine future expected returns for each asset
 					class.</p>
@@ -57,15 +58,26 @@
 				<section>
 					<div class="content">
 						<header>
+							<h3><b>Investment time horizon (years)</b></h3>
+						</header>
+						<form id="form6" onchange="timeEXE(); return false">
+							<div id="time_ass_head" class="range-wrap" style="width: 55%;"></div>
+						</form>
+					</div>
+				</section>
+
+				<section>
+					<div class="content">
+						<header>
 							<h3><b>S&P 500 earnings</b></h3>
 						</header>
-						<p>Annual % growth (using 2019, pre-covid as baseline)</p>
-						<form id="form1" onchange="chartFVEXE(); return false">
-							<div id="earnings_ass_head" class="range-wrap" style="width: 55%;"></div>
+						<p>Annual % growth (using 2019 as baseline - pre COVID)</p>
+						<form id="form1" onchange="spxEXE(); return false">
+							<div id="earnings_ass_head" class="range-wrap percent" style="width: 55%;"></div>
 						</form>
-						<button class="button primary fit small collapsible">Details</button>
+						<button class="button primary fit small collapsible">Context</button>
 						<div class="contentCollapse">
-							<div class="image fit img zoomin">
+							<div class="image fit img">
 								<img src="images/Earnings.png" alt="" />
 							</div>
 						</div>
@@ -77,12 +89,12 @@
 						<header>
 							<h3><b>US 10yr Treasury Yield</b></h3>
 						</header>
-						<form id="form2" onchange="chartFVEXE(); return false">
-							<div id="yield_ass_head" class="range-wrap" style="width: 55%;"></div>
+						<form id="form2" onchange="treasuryEXE(); return false">
+							<div id="yield_ass_head" class="range-wrap percent" style="width: 55%;"></div>
 						</form>
-						<button class="button primary fit small collapsible">Details</button>
+						<button class="button primary fit small collapsible">Context</button>
 						<div class="contentCollapse">
-							<div class="image fit img zoomin">
+							<div class="image fit img">
 								<img src="images/TreasuryYield.png" alt="" />
 							</div>
 						</div>
@@ -95,22 +107,26 @@
 							<h3><b>Risk Index</b></h3>
 						</header>
 						<p>A composite index generated from the equity risk premium and high yield credit spread:</p>
-						<form id="form3" onchange="chartFVEXE(); return false">
+						<form id="form3" onchange="riskEXE(); return false">
 							<div id="risk_ass_head" class="range-wrap" style="width: 55%;"></div>
 						</form>
-						<button class="button primary fit small collapsible">Details</button>
+						<button class="button primary fit small collapsible">Context</button>
 						<div class="contentCollapse">
-							<form id="form7" onchange="chartFVEXE(); return false">
-								<!-- <div id="erp_ass" class="range-wrap" style="width: 55%;"></div> -->
+							<div class="image fit img">
+								<img src="images/RiskIndex.png" alt="" />
+							</div>
+							<p>Adjust these sub-assumptions to override headline Risk assumption</p>
+							<form id="form7" onchange="erpEXE(); return false">
+								<div id="erp_ass_head" class="range-wrap percent" style="width: 55%;"></div>
 							</form>
-							<div class="image fit img zoomin">
+							<div class="image fit img">
 								<img src="images/ERP.png" alt="" />
 							</div>
-							<form id="form8" onchange="chartFVEXE(); return false">
-								<!-- <div id="hys_ass" class="range-wrap" style="width: 55%;"></div> -->
+							<form id="form8" onchange="hysEXE(); return false">
+								<div id="hys_ass_head" class="range-wrap percent" style="width: 55%;"></div>
 							</form>
-							<div class="image fit img zoomin">
-								<img src="images/ERP.png" alt="" />
+							<div class="image fit img">
+								<img src="images/CreditSpread.png" alt="" />
 							</div>
 						</div>
 					</div>
@@ -121,13 +137,13 @@
 						<header>
 							<h3><b>Inflation Expectations</b></h3>
 						</header>
-						<p>Market implied inflation expectations from Treasury vs. TIPS yields</p>
-						<form id="form4" onchange="chartFVEXE(); return false">
-							<div id="inflation_ass_head" class="range-wrap" style="width: 55%;"></div>
+						<p>Market implied inflation expectations</p>
+						<form id="form4" onchange="inflationEXE(); return false">
+							<div id="inflation_ass_head" class="range-wrap percent" style="width: 55%;"></div>
 						</form>
-						<button class="button primary fit small collapsible">Details</button>
+						<button class="button primary fit small collapsible">Context</button>
 						<div class="contentCollapse">
-							<div class="image fit img zoomin">
+							<div class="image fit img">
 								<img src="images/InflationExpectations.png" alt="" />
 							</div>
 						</div>
@@ -139,24 +155,14 @@
 						<header>
 							<h3><b>Portfolio Concentration</b></h3>
 						</header>
-						<p>Your tolerance for concentrated risk in your portfolio (potentially leads to more volatility)
+						<p>Your tolerance for concentrated risk in your portfolio (1 = max position: 40%, 5 = max position: 100%)
 						</p>
-						<form id="form5" onchange="chartFVEXE(); return false">
+						<form id="form5" onchange="concentrationEXE(); return false">
 							<div id="concentration_ass_head" class="range-wrap" style="width: 55%;"></div>
 						</form>
 					</div>
 				</section>
 
-				<section>
-					<div class="content">
-						<header>
-							<h3><b>Investment time horizon</b></h3>
-						</header>
-						<form id="form6" onchange="chartFVEXE(); return false">
-							<div id="time_ass_head" class="range-wrap" style="width: 55%;"></div>
-						</form>
-					</div>
-				</section>
 			</div>
 		</div>
 	</section>
@@ -178,25 +184,41 @@
 		<div class="inner">
 			<header class="special">
 				<h2>Output</h2>
-				<p>The results!.</p>
+				<p>The results!</p>
 			</header>
 			<div class="modelOutput">
 
 				<section>
+					<div class="content" id="donutchart" style="width: 100%; height: 100%;">
+						<!-- <header>
+							<h3><b>Output pie chart</b></h3>
+						</header> -->
+					</div>
+				</section>
+
+				<!-- <section>
 					<div class="content">
 						<header>
 							<h3><b>Output pie chart</b></h3>
 						</header>
 					</div>
-				</section>
+				</section> -->
 
 				<section>
+					<div class="content" id="table_div" style="width: 100%; height: 100%;">
+						<!-- <header>
+							<h3><b>Output table</b></h3>
+						</header> -->
+					</div>
+				</section>
+
+				<!-- <section>
 					<div class="content">
 						<header>
 							<h3><b>Output table</b></h3>
 						</header>
 					</div>
-				</section>
+				</section> -->
 
 			</div>
 		</div>
