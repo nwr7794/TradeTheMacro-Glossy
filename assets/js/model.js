@@ -6,7 +6,7 @@ google.charts.setOnLoadCallback(dataImport);
 function dataImport() {
 
     //Grab specific columns from data sheet
-    var queryString = encodeURIComponent("SELECT A,B,C,G,J,K,L,M,N,R,S,T,U,V,W,X where A >= date '2000-01-01' ");
+    var queryString = encodeURIComponent("SELECT A,B,C,G,J,K,L,M,N,R,S,T,U,V,W,X,Y where A >= date '2000-01-01' ");
 
     var query = new google.visualization.Query(
         'https://docs.google.com/spreadsheets/d/1eABM4-XgHerB98VjVo1kVvcAl6ocGPCstMQs4bh5WEA/gviz/tq?sheet=Data&headers=1&tq=' + queryString);
@@ -62,37 +62,6 @@ function setInitialAssumption(assumption, colNum, initial, round) {
 }
 
 function initialConditions() {
-    // Initial conditions to set:
-    // Generic function to set initial input conditions
-    // function setInitialAssumption(assumption, colNum, initial, round) {
-    //     // ex: ("model_ass1",0,"last" or "average" or 3(fixed number))
-    //     var label = data_raw.getColumnLabel(colNum)
-    //     // Set starting value
-    //     if (initial === 'last') {
-    //         var nominal_last_val = data_raw.getValue(data_raw.getNumberOfRows() - 1, colNum)
-    //     } else if (initial === 'average') {
-    //         //Find average of JSON data
-    //         var sum = 0
-    //         var count = 0
-    //         for (i = 0; i < data_array.rows.length; i++) {
-    //             if (data_array.rows[i]["c"][9] != null) {
-    //                 count = count + 1
-    //                 sum = sum + data_array.rows[i]["c"][9]["v"]
-    //             }
-    //         }
-    //         var nominal_last_val = sum / count
-    //     } else {
-    //         var nominal_last_val = initial;
-    //     }
-    //     var nominal_range = data_raw.getColumnRange(colNum)
-    //     var nominal_delta = nominal_range['max'] - nominal_range['min'];
-    //     var nominal_lower_bound = (nominal_last_val - nominal_delta / 1).toFixed(round)
-    //     var nominal_upper_bound = (nominal_last_val + nominal_delta / 1).toFixed(round)
-    //     var nominal_step = ((nominal_upper_bound - nominal_lower_bound) / 50).toFixed(round)
-    //     var stringInput = '<label for="Predictor">' + label + ': </label><input type="range" class="range" min="' + nominal_lower_bound + '" max="' + nominal_upper_bound + '" step="' + nominal_step + '" value="' + nominal_last_val + '" id="' + assumption + '"><output class="bubble"></output><br>';
-    //     // console.log(stringInput)
-    //     document.getElementById(assumption + '_head').innerHTML = stringInput
-    // }
 
     // SPX earnings growth
     setInitialAssumption('earnings_ass', 9, 'average', 3);
@@ -143,7 +112,7 @@ function gold_fv_func() {
     // Gold FV - Inputs: treasury yield, inflation expec (1 yr regression)
     var yield_ass = parseFloat(document.getElementById('yield_ass').value)
     var inflation_ass = parseFloat(document.getElementById('inflation_ass').value)
-    gold_fv = data_raw.getValue(0, 13) * (yield_ass - inflation_ass) + data_raw.getValue(1, 13)
+    gold_fv = data_raw.getValue(0, 16) * (yield_ass - inflation_ass)**2 + data_raw.getValue(1, 16) * (yield_ass - inflation_ass)  + data_raw.getValue(2, 16)
     gold_last = data_raw.getValue(data_raw.getNumberOfRows() - 1, 4)
     // console.log(gold_fv)
 }
@@ -362,9 +331,9 @@ function timeEXE() {
 }
 
 
-/////////// Design stuff - test for other screen sizes as well.  ///////////////// Ok for now
-/////////// FRED data scrape process for more reliable backend. Also, commods regression????....
-/////////// Fix domain name and, add scatter charts for context/adjust models?
+/////////// FRED data scrape process for more reliable backend. Also, commods regression - lets do this now/first
+            ////// Just migrate this process to lambda...will have to redo visualizations/entire script //// will do later when more users...
+/////////// Add scatter charts for context/adjust models?
 /////////// Once these 2 done, publish and start getting feedback.
 /////////// All of the design for the output charts
 /////////// All of the contextual visuals for the assumptions
