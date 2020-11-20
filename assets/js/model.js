@@ -25,7 +25,7 @@ function dataImport() {
         data_raw = response.getDataTable();
         data_array = data_raw.toJSON()
         data_array = JSON.parse(data_array)
-        console.log(data_raw)
+        // console.log(data_raw)
 
         //Set initial user input assumptions
         initialConditions();
@@ -340,7 +340,6 @@ function timeEXE() {
 /////////// Once these 2 done, publish and start getting feedback.
 /////////// All of the design for the output charts
 /////////// All of the contextual visuals for the assumptions
-/////////// 
 
 
 
