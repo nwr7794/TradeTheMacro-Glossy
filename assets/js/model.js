@@ -6,10 +6,12 @@ google.charts.setOnLoadCallback(dataImport);
 function dataImport() {
 
     //Grab specific columns from data sheet
-    var queryString = encodeURIComponent("SELECT A,B,C,G,J,K,L,M,N,R,S,T,U,V,W,X,Y where A >= date '2000-01-01' ");
+    // var queryString = encodeURIComponent("SELECT A,B,C,G,J,K,L,M,N,R,S,T,U,V,W,X,Y where A >= date '2000-01-01' ");
+    var queryString = encodeURIComponent("SELECT * where A >= date '2000-01-01' ");
 
     var query = new google.visualization.Query(
-        'https://docs.google.com/spreadsheets/d/1eABM4-XgHerB98VjVo1kVvcAl6ocGPCstMQs4bh5WEA/gviz/tq?sheet=Data&headers=1&tq=' + queryString);
+        // 'https://docs.google.com/spreadsheets/d/1eABM4-XgHerB98VjVo1kVvcAl6ocGPCstMQs4bh5WEA/gviz/tq?sheet=Data&headers=1&tq=' + queryString);
+        'https://docs.google.com/spreadsheets/d/1fvuBTNtYMjV4JOwl9OKRDbRYS4F2nTOCJmhr40WHcYM/gviz/tq?sheet=Data&headers=1&tq=' + queryString);
     query.send(handleSampleDataQueryResponse);
 
     function handleSampleDataQueryResponse(response) {
@@ -23,7 +25,7 @@ function dataImport() {
         data_raw = response.getDataTable();
         data_array = data_raw.toJSON()
         data_array = JSON.parse(data_array)
-        // console.log(data_raw)
+        console.log(data_raw)
 
         //Set initial user input assumptions
         initialConditions();
@@ -42,9 +44,9 @@ function setInitialAssumption(assumption, colNum, initial, round) {
         var sum = 0
         var count = 0
         for (i = 0; i < data_array.rows.length; i++) {
-            if (data_array.rows[i]["c"][9] != null) {
+            if (data_array.rows[i]["c"][colNum] != null) {
                 count = count + 1
-                sum = sum + data_array.rows[i]["c"][9]["v"]
+                sum = sum + data_array.rows[i]["c"][colNum]["v"]
             }
         }
         var nominal_last_val = sum / count
@@ -64,17 +66,17 @@ function setInitialAssumption(assumption, colNum, initial, round) {
 function initialConditions() {
 
     // SPX earnings growth
-    setInitialAssumption('earnings_ass', 9, 'average', 3);
+    setInitialAssumption('earnings_ass', 8, 'average', 3);
     // 10yr treasury yld (use last)
     setInitialAssumption('yield_ass', 2, 'last', 3);
     // Risk Index (use last)
-    setInitialAssumption('risk_ass', 12, 'last', 1);
+    setInitialAssumption('risk_ass', 11, 'average', 1); //had at last previously
     //Generate HYS and ERP from Risk index
     var risk_ass = parseFloat(document.getElementById('risk_ass').value)
-    var erp_ass = risk_ass * data_raw.getValue(1, 11) + data_raw.getValue(0, 11)
-    var hys_ass = risk_ass * data_raw.getValue(3, 11) + data_raw.getValue(2, 11)
+    var erp_ass = risk_ass * data_raw.getValue(1, 10) + data_raw.getValue(0, 10)
+    var hys_ass = risk_ass * data_raw.getValue(3, 10) + data_raw.getValue(2, 10)
     setInitialAssumption('erp_ass', 3, erp_ass, 3);
-    setInitialAssumption('hys_ass', 10, hys_ass, 3);
+    setInitialAssumption('hys_ass', 9, hys_ass, 3);
     // Inflation Expectations (use last)
     setInitialAssumption('inflation_ass', 5, 'last', 4);
     // Portfolio concentration (Use balanced)
@@ -112,7 +114,7 @@ function gold_fv_func() {
     // Gold FV - Inputs: treasury yield, inflation expec (1 yr regression)
     var yield_ass = parseFloat(document.getElementById('yield_ass').value)
     var inflation_ass = parseFloat(document.getElementById('inflation_ass').value)
-    gold_fv = data_raw.getValue(0, 16) * (yield_ass - inflation_ass)**2 + data_raw.getValue(1, 16) * (yield_ass - inflation_ass)  + data_raw.getValue(2, 16)
+    gold_fv = data_raw.getValue(0, 14) * (yield_ass - inflation_ass)**2 + data_raw.getValue(1, 14) * (yield_ass - inflation_ass)  + data_raw.getValue(2, 14)
     gold_last = data_raw.getValue(data_raw.getNumberOfRows() - 1, 4)
     // console.log(gold_fv)
 }
@@ -145,7 +147,7 @@ function highYield_fv_func() {
     var yield_ass = treasury_ass + hys_ass
 
     var par = 100;
-    var coupon = data_raw.getValue(data_raw.getNumberOfRows() - 1, 2) + data_raw.getValue(data_raw.getNumberOfRows() - 1, 10)
+    var coupon = data_raw.getValue(data_raw.getNumberOfRows() - 1, 2) + data_raw.getValue(data_raw.getNumberOfRows() - 1, 9)
     var time_ass = parseFloat(document.getElementById('time_ass').value)
     var future_price = (2 * par + 2 * (10 - time_ass) * coupon * par - (10 - time_ass) * yield_ass * par) / ((10 - time_ass) * yield_ass + 2)
     highYield_fv = future_price + par * coupon * time_ass
@@ -156,8 +158,8 @@ function highYield_fv_func() {
 function commods_fv_func() {
     // Commodities FV - Inputs: inflation expectations (2016 on rgeression)
     var inflation_ass = parseFloat(document.getElementById('inflation_ass').value)
-    commods_fv = data_raw.getValue(0, 15) * inflation_ass + data_raw.getValue(1, 15)
-    commods_last = data_raw.getValue(data_raw.getNumberOfRows() - 1, 14)
+    commods_fv = data_raw.getValue(0, 13) * inflation_ass + data_raw.getValue(1, 13)
+    commods_last = data_raw.getValue(data_raw.getNumberOfRows() - 1, 12)
     // console.log(commods_fv)
 }
 
@@ -176,7 +178,7 @@ function modelRun() {
     //We have fair value calculated for each asset class
     //Grab last price of each asset and create array of arrays
     var names_arr = [['S&P 500', 'spx'], ['Gold', 'gold'], ['US 10yr Treasury', 'treasury'], ['High Yield Debt', 'highYield'], ['Commodities ($DBC)', 'commods'], ['Cash', 'cash']]
-    var time_ass = parseFloat(document.getElementById('time_ass').value)
+    var time_ass = parseInt(document.getElementById('time_ass').value)
     // Calculate expected return
     var output_data = [['Name', 'Exp Return (ann)', 'Last', 'Value']]; //Need to add allocation %
     for (i = 0; i < names_arr.length; i++) {
@@ -196,15 +198,17 @@ function modelRun() {
     var maxSize = maxSize_arr[parseInt(document.getElementById('concentration_ass').value) - 1];
     // Return required for max position (function of concentration and time horizon)
     var minReturn_arr = [
-        [0.35, 0.45, 0.55, 0.65, 0.75], // 1 Year
-        [0.18, 0.23, 0.28, 0.33, 0.38], // 3 Year
-        [0.12, 0.15, 0.18, 0.22, 0.25] // 5 Year
+        [0.2, 0.3, 0.4, 0.5, 0.6], // 1 Year
+        [0.1, 0.15, 0.2, 0.25, 0.3], // 3 Year
+        [0.07, 0.1, 0.13, 0.17, 0.2] // 5 Year
     ];
-    var minReturn = minReturn_arr[(parseInt(document.getElementById('time_ass').value) - 1) / 2][parseInt(document.getElementById('concentration_ass').value) - 1]
+    var minReturn = minReturn_arr[(time_ass - 1) / 2][parseInt(document.getElementById('concentration_ass').value) - 1]
     // Now we have min return required for max position. Use 1% increments to generate curve: 65% exp, 35% linear
     var curveLowerBound = 0.01
     var rateExp = (maxSize / curveLowerBound) ** (1 / (minReturn * 100)) //Assumes curve using 1% increments
-    var expWeight = 0.65; //Exponential curve vs. linear curve weighting
+    var expWeight_arr = [.05, .10, .20, .45, .75]
+    var expWeight = expWeight_arr[parseInt(document.getElementById('concentration_ass').value) - 1];
+    // var expWeight = 0.65; //Exponential curve vs. linear curve weighting
     var sizeCurve = []
     for (i = curveLowerBound * 100; i <= 100; i++) {
         var expValue = Math.min(curveLowerBound * (rateExp ** (i)), maxSize)
@@ -250,7 +254,7 @@ function modelRun() {
     chart_view.setColumns([0, 4])
 
     var chart_options = {
-        title: 'Asset Class Allocation',
+        title: 'Asset Class Allocation (' + time_ass + ' yr)',
         legend: 'bottom',
         width: '100%',
         height: '100%'
@@ -296,8 +300,8 @@ function treasuryEXE() {
 function riskEXE() {
     //Generate HYS and ERP from Risk index, if toggled
     var risk_ass = parseFloat(document.getElementById('risk_ass').value)
-    var erp_ass = risk_ass * data_raw.getValue(1, 11) + data_raw.getValue(0, 11)
-    var hys_ass = risk_ass * data_raw.getValue(3, 11) + data_raw.getValue(2, 11)
+    var erp_ass = risk_ass * data_raw.getValue(1, 10) + data_raw.getValue(0, 10)
+    var hys_ass = risk_ass * data_raw.getValue(3, 10) + data_raw.getValue(2, 10)
     document.getElementById("erp_ass").value = erp_ass;
     document.getElementById("hys_ass").value = hys_ass;
     slider_function(); //Reset slider bubbles
@@ -330,7 +334,6 @@ function timeEXE() {
     google.charts.setOnLoadCallback(modelRun);
 }
 
-
 /////////// FRED data scrape process for more reliable backend. Also, commods regression - lets do this now/first
             ////// Just migrate this process to lambda...will have to redo visualizations/entire script //// will do later when more users...
 /////////// Add scatter charts for context/adjust models?
@@ -338,6 +341,8 @@ function timeEXE() {
 /////////// All of the design for the output charts
 /////////// All of the contextual visuals for the assumptions
 /////////// 
+
+
 
 
 
