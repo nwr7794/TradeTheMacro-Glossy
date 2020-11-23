@@ -73,9 +73,9 @@
 						<form id="form1" onchange="spxEXE(); return false">
 							<div id="earnings_ass_head" class="range-wrap percent" style="width: 55%;"></div>
 						</form>
-						<p>Include sctor ETFs? 
-							Reversion: assumes over/under performers last 12 months revert back towards S&P500 performance.
-							Momentum: assumes over/under performers last 12 months continue to trend away from S&P500 performance.						
+						<p><b>Include sctor ETFs?</b><br> 
+							<b>Reversion:</b> assumes over/under performers last 12 months revert back towards S&P500 performance.<br>
+							<b>Momentum:</b> assumes over/under performers last 12 months continue to trend away from S&P500 performance.						
 						</p>
 						<label for="etf_trend"><b>Sector trend assumption:</b></label>
 						<select name="etf_trend" id="etf_ass" onchange="etfEXE(); return false">
@@ -115,7 +115,7 @@
 						<header>
 							<h3><b>Risk Index</b></h3>
 						</header>
-						<p>A composite index generated from the equity risk premium and high yield credit spread:</p>
+						<p>Index generated from the equity risk premium and high yield credit spread.<br><b>Higher</b> = more investor fear.<br> <b>0</b> = 10yr average.</p>
 						<form id="form3" onchange="riskEXE(); return false">
 							<div id="risk_ass_head" class="range-wrap" style="width: 55%;"></div>
 						</form>
@@ -164,7 +164,7 @@
 						<header>
 							<h3><b>Portfolio Concentration</b></h3>
 						</header>
-						<p>Your tolerance for concentrated risk in your portfolio (1 = max position: 40%, 5 = max position: 100%)
+						<p>Your tolerance for concentrated risk in your portfolio.<br>1 = max position: 40%<br> 5 = max position: 100%
 						</p>
 						<form id="form5" onchange="concentrationEXE(); return false">
 							<div id="concentration_ass_head" class="range-wrap" style="width: 55%;"></div>
@@ -193,7 +193,7 @@
 		<div class="inner">
 			<header class="special">
 				<h2>Output</h2>
-				<p>The results! (Initial load can take ~10 seconds)</p>
+				<p>The results!</p>
 			</header>
 			<div class="modelOutput">
 

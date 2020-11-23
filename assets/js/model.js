@@ -79,7 +79,7 @@ function initialConditions() {
     // Inflation Expectations (use last)
     setInitialAssumption('inflation_ass', 5, 'last', 4);
     // Portfolio concentration (Use balanced: 1)
-    document.getElementById('concentration_ass_head').innerHTML = '<label for="Predictor">Portfolio Concentration: </label><input type="range" class="range" min="1" max="5" step="1" value="1" id="concentration_ass"><output class="bubble"></output><br>';
+    document.getElementById('concentration_ass_head').innerHTML = '<label for="Predictor">Portfolio Concentration: </label><input type="range" class="range" min="1" max="5" step="1" value="3" id="concentration_ass"><output class="bubble"></output><br>';
     // Time Horizon (1 year)
     document.getElementById('time_ass_head').innerHTML = '<label for="Predictor">Time Horizon: </label><input type="range" class="range" min="1" max="5" step="2" value="1" id="time_ass"><output class="bubble"></output><br>';
     //Run function that makes slider work after divs are loaded
@@ -224,7 +224,7 @@ function modelRun() {
     //We have fair value calculated for each asset class
     //Grab last price of each asset and create array of arrays
 
-    var names_arr = [['S&P 500', 'spx', 'SPY'], ['Gold', 'gold', 'GLD'], ['US 10yr Treasury', 'treasury', 'GOVT'], ['High Yield Debt', 'highYield', 'HYG'], ['Commodities', 'commods', 'DBC'], ['Cash', 'cash', 'NA']]
+    var names_arr = [['S&P 500', 'spx', 'SPY'], ['Gold', 'gold', 'GLD'], ['US 10yr Treasury', 'treasury', 'GOVT'], ['High Yield Debt', 'highYield', 'HYG'], ['Commodities', 'commods', 'DBC'], ['Cash', 'cash', '']]
     var time_ass = parseInt(document.getElementById('time_ass').value)
     // Calculate expected return
     var output_data = [['Name', 'Exp Return (ann)', 'Last', 'Tix']]; //Need to add allocation %
@@ -255,16 +255,23 @@ function modelRun() {
     var maxSize_arr = [.40, .55, .70, .85, 1]
     var maxSize = maxSize_arr[parseInt(document.getElementById('concentration_ass').value) - 1];
     // Return required for max position (function of concentration and time horizon)
+    // var minReturn_arr = [
+    //     [0.2, 0.3, 0.4, 0.5, 0.6], // 1 Year
+    //     [0.1, 0.15, 0.2, 0.25, 0.3], // 3 Year
+    //     [0.07, 0.1, 0.13, 0.17, 0.2] // 5 Year
+    // ];
     var minReturn_arr = [
-        [0.2, 0.3, 0.4, 0.5, 0.6], // 1 Year
-        [0.1, 0.15, 0.2, 0.25, 0.3], // 3 Year
-        [0.07, 0.1, 0.13, 0.17, 0.2] // 5 Year
+        [0.5, 0.5, 0.5, 0.5, 0.5], // 1 Year
+        [0.25, 0.25, 0.25, 0.25, 0.5], // 3 Year
+        [0.17, 0.17, 0.17, 0.17, 0.17] // 5 Year
     ];
     var minReturn = minReturn_arr[(time_ass - 1) / 2][parseInt(document.getElementById('concentration_ass').value) - 1]
     // Now we have min return required for max position. Use 1% increments to generate curve: 65% exp, 35% linear
     var curveLowerBound = 0.01
     var rateExp = (maxSize / curveLowerBound) ** (1 / (minReturn * 100)) //Assumes curve using 1% increments
-    var expWeight_arr = [.05, .10, .20, .45, .75]
+    // exponential vs linear sizing for different concentration profiles
+    var expWeight_arr = [.6, .6, .6, .6, .6]
+    // var expWeight_arr = [.05, .10, .20, .45, .75]
     var expWeight = expWeight_arr[parseInt(document.getElementById('concentration_ass').value) - 1];
     // var expWeight = 0.65; //Exponential curve vs. linear curve weighting
     var sizeCurve = []
