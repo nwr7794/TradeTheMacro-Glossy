@@ -7,6 +7,14 @@
 <html>
 
 <head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-285ZYVZRFM"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+		gtag('config', 'G-285ZYVZRFM');
+	</script>
 	<title>Macro Fade</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -46,7 +54,8 @@
 	<section class="wrapper">
 		<div class="inner">
 			<header class="special">
-				<h3>This is a BETA version - <a style="color:blue" href = "mailto: tradethemacro@gmail.com"><u>Email me</u></a> with questions/comments</h3>
+				<h3>This is a BETA version - <a style="color:blue" href="mailto: tradethemacro@gmail.com"><u>Email
+							me</u></a> with questions/comments</h3>
 				<h2>Assumptions</h2>
 				<p>Set your economic assumptions for the future to determine expected returns for each asset
 					class.</p>
@@ -73,9 +82,11 @@
 						<form id="form1" onchange="spxEXE(); return false">
 							<div id="earnings_ass_head" class="range-wrap percent" style="width: 55%;"></div>
 						</form>
-						<p><b>Include sctor ETFs?</b><br> 
-							<b>Reversion:</b> assumes over/under performers last 12 months revert back towards S&P500 performance.<br>
-							<b>Momentum:</b> assumes over/under performers last 12 months continue to trend away from S&P500 performance.						
+						<p><b>Include sctor ETFs?</b><br>
+							<b>Reversion:</b> assumes over/under performers last 12 months revert back towards S&P500
+							performance.<br>
+							<b>Momentum:</b> assumes over/under performers last 12 months continue to trend away from
+							S&P500 performance.
 						</p>
 						<label for="etf_trend"><b>Sector trend assumption:</b></label>
 						<select name="etf_trend" id="etf_ass" onchange="etfEXE(); return false">
@@ -115,7 +126,8 @@
 						<header>
 							<h3><b>Risk Index</b></h3>
 						</header>
-						<p>Index generated from the equity risk premium and high yield credit spread.<br><b>Higher</b> = more investor fear.<br> <b>0</b> = 10yr average.</p>
+						<p>Index generated from the equity risk premium and high yield credit spread.<br><b>Higher</b> =
+							more investor fear.<br> <b>0</b> = 10yr average.</p>
 						<form id="form3" onchange="riskEXE(); return false">
 							<div id="risk_ass_head" class="range-wrap" style="width: 55%;"></div>
 						</form>
@@ -164,7 +176,8 @@
 						<header>
 							<h3><b>Portfolio Concentration</b></h3>
 						</header>
-						<p>Your tolerance for concentrated risk in your portfolio.<br>1 = max position: 40%<br> 5 = max position: 100%
+						<p>Your tolerance for concentrated risk in your portfolio.<br>1 = max position: 40%<br> 5 = max
+							position: 100%
 						</p>
 						<form id="form5" onchange="concentrationEXE(); return false">
 							<div id="concentration_ass_head" class="range-wrap" style="width: 55%;"></div>
@@ -218,7 +231,8 @@
 			<div class="content">
 				<section>
 					<h3>Invest at your own risk!</h3>
-					<p>This is not investment advice. This is a tool to help you think about your own investment decisions.</p>
+					<p>This is not investment advice. This is a tool to help you think about your own investment
+						decisions.</p>
 				</section>
 				<!-- <section>
 					<h4>Sem turpis amet semper</h4>
@@ -232,8 +246,10 @@
 				<section>
 					<h4>Find us here!</h4>
 					<ul class="plain">
-						<li><a style="color:rgba(255, 255, 255, 0.5)" href = "mailto: tradethemacro@gmail.com"><u>Email</u></a></li>
-						<li><a href="https://twitter.com/hedgefnddropout">Twitter<i class="icon fa-twitter">&nbsp;</i></a></li>						
+						<li><a style="color:rgba(255, 255, 255, 0.5)"
+								href="mailto: tradethemacro@gmail.com"><u>Email</u></a></li>
+						<li><a href="https://twitter.com/hedgefnddropout">Twitter<i
+									class="icon fa-twitter">&nbsp;</i></a></li>
 						<!-- <li><a href="#"><i class="icon fa-facebook">&nbsp;</i>Facebook</a></li>
 						<li><a href="#"><i class="icon fa-instagram">&nbsp;</i>Instagram</a></li>
 						<li><a href="#"><i class="icon fa-github">&nbsp;</i>Github</a></li> -->
