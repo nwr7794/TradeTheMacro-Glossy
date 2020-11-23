@@ -67,12 +67,23 @@
 				<section>
 					<div class="content">
 						<header>
-							<h3><b>S&P 500 earnings</b></h3>
+							<h3><b>Equities Assumptions</b></h3>
 						</header>
-						<p>Annual % growth (using 2019 as baseline - pre COVID)</p>
+						<p>S&P500 annual earnings % growth (using 2019 as baseline - pre COVID)</p>
 						<form id="form1" onchange="spxEXE(); return false">
 							<div id="earnings_ass_head" class="range-wrap percent" style="width: 55%;"></div>
 						</form>
+						<p>Include sctor ETFs? 
+							Reversion: assumes over/under performers last 12 months revert back towards S&P500 performance.
+							Momentum: assumes over/under performers last 12 months continue to trend away from S&P500 performance.						
+						</p>
+						<label for="etf_trend"><b>Sector trend assumption:</b></label>
+						<select name="etf_trend" id="etf_ass" onchange="etfEXE(); return false">
+							<option value="reversion">Reversion</option>
+							<option value="momentum">Momentum</option>
+							<option value="ignore">Don't include</option>
+						</select>
+						<br>
 						<button class="button primary fit small collapsible">Context</button>
 						<div class="contentCollapse">
 							<div class="image fit img">
@@ -207,7 +218,7 @@
 			<div class="content">
 				<section>
 					<h3>Invest at your own risk!</h3>
-					<p>This is not investment advice. This is a tool to help you think about your own investment decisions</p>
+					<p>This is not investment advice. This is a tool to help you think about your own investment decisions.</p>
 				</section>
 				<!-- <section>
 					<h4>Sem turpis amet semper</h4>

@@ -6,11 +6,9 @@ google.charts.setOnLoadCallback(dataImport);
 function dataImport() {
 
     //Grab specific columns from data sheet
-    // var queryString = encodeURIComponent("SELECT A,B,C,G,J,K,L,M,N,R,S,T,U,V,W,X,Y where A >= date '2000-01-01' ");
     var queryString = encodeURIComponent("SELECT * where A >= date '2000-01-01' ");
 
     var query = new google.visualization.Query(
-        // 'https://docs.google.com/spreadsheets/d/1eABM4-XgHerB98VjVo1kVvcAl6ocGPCstMQs4bh5WEA/gviz/tq?sheet=Data&headers=1&tq=' + queryString);
         'https://docs.google.com/spreadsheets/d/1fvuBTNtYMjV4JOwl9OKRDbRYS4F2nTOCJmhr40WHcYM/gviz/tq?sheet=Data&headers=1&tq=' + queryString);
     query.send(handleSampleDataQueryResponse);
 
@@ -30,6 +28,7 @@ function dataImport() {
         //Set initial user input assumptions
         initialConditions();
     }
+
 }
 
 // Generic function to set initial input conditions
@@ -79,8 +78,8 @@ function initialConditions() {
     setInitialAssumption('hys_ass', 9, hys_ass, 3);
     // Inflation Expectations (use last)
     setInitialAssumption('inflation_ass', 5, 'last', 4);
-    // Portfolio concentration (Use balanced)
-    document.getElementById('concentration_ass_head').innerHTML = '<label for="Predictor">Portfolio Concentration: </label><input type="range" class="range" min="1" max="5" step="1" value="3" id="concentration_ass"><output class="bubble"></output><br>';
+    // Portfolio concentration (Use balanced: 1)
+    document.getElementById('concentration_ass_head').innerHTML = '<label for="Predictor">Portfolio Concentration: </label><input type="range" class="range" min="1" max="5" step="1" value="1" id="concentration_ass"><output class="bubble"></output><br>';
     // Time Horizon (1 year)
     document.getElementById('time_ass_head').innerHTML = '<label for="Predictor">Time Horizon: </label><input type="range" class="range" min="1" max="5" step="2" value="1" id="time_ass"><output class="bubble"></output><br>';
     //Run function that makes slider work after divs are loaded
@@ -107,14 +106,64 @@ function spx_fv_func() {
     var yield_ass = parseFloat(document.getElementById('yield_ass').value)
     spx_fv = 1 / (yield_ass + erp_ass) * earnings_abs_ass
     spx_last = data_raw.getValue(data_raw.getNumberOfRows() - 1, 1)
+
+    // Run etf calc
+    etf_fv_func();
     // console.log(spx_fv)
 }
+
+function etf_fv_func() {
+    var time_ass = parseInt(document.getElementById('time_ass').value)
+    // Grab momentum/reversion/ignore assumption
+    var etf_ass = document.getElementById('etf_ass').value
+    // var etf_ass = 'ignore' ///// need to replace with assumption ///////////////////////////////////
+    // array to recieve results
+    etf_fv = [];
+
+    if (etf_ass != 'ignore') {
+
+        var spxRet = (spx_fv / spx_last) ** (1 / time_ass) - 1 //annualized
+
+        var array_raw = [];
+        for (var i = 0; i < data_array.rows.length; i++) {
+            if (data_array.rows[i]["c"][16] == null) { } else {
+                array_raw.push([data_array.rows[i]["c"][16]["v"],
+                data_array.rows[i]["c"][17]["v"],
+                data_array.rows[i]["c"][18]["v"],
+                data_array.rows[i]["c"][19]["v"]
+                ])
+            }
+        }
+
+        for (i = 0; i < array_raw.length; i++) {
+            if (etf_ass === 'momentum') {
+                var target = 100 * (1 + spxRet) ** 5
+                target = Math.max(array_raw[i][2] * 2 * target + target, 25)
+                var expReturn = (target / (100 + array_raw[i][2] * 100)) ** (1 / 5) - 1
+                // var expReturn = Math.max(rate, -0.15)
+            } else { //reversion
+                var target = 100 * (1 + spxRet) ** 5
+                var expReturn = (target / (100 + array_raw[i][2] * 100)) ** (1 / 5) - 1
+            }
+            // Now push into array
+            etf_fv.push([array_raw[i][0], array_raw[i][1], expReturn, array_raw[i][3]])
+        }
+    }
+    // Sort by exp return
+    etf_fv = etf_fv.sort(function (a, b) {
+        return b[2] - a[2];
+    });
+
+    // console.log(etf_fv)
+}
+
+
 
 function gold_fv_func() {
     // Gold FV - Inputs: treasury yield, inflation expec (1 yr regression)
     var yield_ass = parseFloat(document.getElementById('yield_ass').value)
     var inflation_ass = parseFloat(document.getElementById('inflation_ass').value)
-    gold_fv = data_raw.getValue(0, 14) * (yield_ass - inflation_ass)**2 + data_raw.getValue(1, 14) * (yield_ass - inflation_ass)  + data_raw.getValue(2, 14)
+    gold_fv = data_raw.getValue(0, 14) * (yield_ass - inflation_ass) ** 2 + data_raw.getValue(1, 14) * (yield_ass - inflation_ass) + data_raw.getValue(2, 14)
     gold_last = data_raw.getValue(data_raw.getNumberOfRows() - 1, 4)
     // console.log(gold_fv)
 }
@@ -172,26 +221,35 @@ function cash_fv_func() {
 
 function modelRun() {
 
-    // We need last value, fair value, expected return (annualized), target allocation
-    // Also should change data scraping process for datasets using the fred importxml method in sheets
-
     //We have fair value calculated for each asset class
     //Grab last price of each asset and create array of arrays
-    var names_arr = [['S&P 500', 'spx'], ['Gold', 'gold'], ['US 10yr Treasury', 'treasury'], ['High Yield Debt', 'highYield'], ['Commodities ($DBC)', 'commods'], ['Cash', 'cash']]
+
+    var names_arr = [['S&P 500', 'spx', 'SPY'], ['Gold', 'gold', 'GLD'], ['US 10yr Treasury', 'treasury', 'GOVT'], ['High Yield Debt', 'highYield', 'HYG'], ['Commodities', 'commods', 'DBC'], ['Cash', 'cash', 'NA']]
     var time_ass = parseInt(document.getElementById('time_ass').value)
     // Calculate expected return
-    var output_data = [['Name', 'Exp Return (ann)', 'Last', 'Value']]; //Need to add allocation %
+    var output_data = [['Name', 'Exp Return (ann)', 'Last', 'Tix']]; //Need to add allocation %
     for (i = 0; i < names_arr.length; i++) {
-        // Name, Expected Return, Last, FV
+        // Name, Expected Return, Last, tix
         var last = eval(names_arr[i][1] + '_last')
         var fv = eval(names_arr[i][1] + '_fv')
         var expRet = (fv / last) ** (1 / time_ass) - 1 //annualized
-        var arr = [names_arr[i][0], expRet, last, fv]
+        var arr = [names_arr[i][0], expRet, last, names_arr[i][2]]
         output_data.push(arr)
     }
-    // console.log(output_data)
 
-    //Run asset allocation model
+    ////// Add in etfs here? (Top 5 only)
+    if (etf_fv.length != 0) {
+        for (j = 0; j < 5; j++) {
+            output_data.push([
+                etf_fv[j][0],
+                etf_fv[j][2],
+                etf_fv[j][3],
+                etf_fv[j][1]
+            ]
+            )
+        }
+    }
+
     // Generate allocation curves based on:
     // Max position size
     var maxSize_arr = [.40, .55, .70, .85, 1]
@@ -215,13 +273,13 @@ function modelRun() {
         var linearValue = Math.min(maxSize / (minReturn / curveLowerBound) + maxSize / (minReturn / curveLowerBound) * (i - 1), maxSize)
         sizeCurve.push([i / 100, expValue * expWeight + linearValue * (1 - expWeight)])
     }
-    // console.log(sizeCurve)
 
-    // Now add expected return to output_data table
+    // Sort by exp return
     var output_sorted = output_data.sort(function (a, b) {
         return b[1] - a[1];
     });
-    // console.log(output_sorted)
+
+    //Calculate and add hold p to table
     output_sorted[0].push('Hold %')
     var allocated = 0;
     for (j = 1; j < output_sorted.length; j++) {
@@ -243,7 +301,10 @@ function modelRun() {
             allocated = allocated + Math.min(1 - allocated, allo[1])
         }
     }
-    // console.log(output_sorted)
+
+
+    ////// Here is where we will re arrange the columns as such: Name, return, hold p, last, tix. - actually not sure 
+    ////////////// Have to create a function for when momentum/reversion changes
 
     //Create pie chart and table
     var data = google.visualization.arrayToDataTable(output_sorted, false);
@@ -278,8 +339,6 @@ function modelRun() {
     formatter.format(data, 1);
     formatter.format(data, 4);
     formatter1.format(data, 2);
-    formatter1.format(data, 3);
-
 
     var table = new google.visualization.Table(document.getElementById('table_div'));
     table.draw(data, table_options);
@@ -288,6 +347,10 @@ function modelRun() {
 //These functions rerun relevant fair value functions, and then the model run function. Load the google charts api on each function
 function spxEXE() {
     google.charts.setOnLoadCallback(spx_fv_func);
+    google.charts.setOnLoadCallback(modelRun);
+}
+function etfEXE() {
+    google.charts.setOnLoadCallback(etf_fv_func);
     google.charts.setOnLoadCallback(modelRun);
 }
 function treasuryEXE() {
