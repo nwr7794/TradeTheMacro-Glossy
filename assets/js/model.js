@@ -227,7 +227,7 @@ function modelRun() {
     var names_arr = [['S&P 500', 'spx', 'SPY'], ['Gold', 'gold', 'GLD'], ['US 10yr Treasury', 'treasury', 'GOVT'], ['High Yield Debt', 'highYield', 'HYG'], ['Commodities', 'commods', 'DBC'], ['Cash', 'cash', '']]
     var time_ass = parseInt(document.getElementById('time_ass').value)
     // Calculate expected return
-    var output_data = [['Name', 'Exp Return (ann)', 'Last', 'Tix']]; //Need to add allocation %
+    var output_data = [['Name', 'Exp Return (p.a.)', 'Last', 'Ticker']]; //Need to add allocation %
     for (i = 0; i < names_arr.length; i++) {
         // Name, Expected Return, Last, tix
         var last = eval(names_arr[i][1] + '_last')
@@ -331,7 +331,9 @@ function modelRun() {
     var table_options = {
         width: '100%',
         height: '100%',
-        allowHtml: true
+        allowHtml: true,
+        sortColumn: 4,
+        sortAscending: false
     }
 
     //Draw pie chart
