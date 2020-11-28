@@ -23,7 +23,7 @@ function dataImport() {
         data_raw = response.getDataTable();
         data_array = data_raw.toJSON()
         data_array = JSON.parse(data_array)
-        // console.log(data_raw)
+        console.log(data_raw)
 
         //Set initial user input assumptions
         initialConditions();
@@ -92,6 +92,7 @@ function initialConditions() {
     commods_fv_func();
     cash_fv_func();
     modelRun();
+    drawContext();
 }
 
 function spx_fv_func() {
@@ -353,6 +354,93 @@ function modelRun() {
     table.draw(data, table_options);
 }
 
+function drawContext() {
+
+    // var context_view = new google.visualization.DataView(data_raw);
+    //Create contextual charts
+    function contextChart(col1, col2, options, chartType, divID, start_date = '2000-01-01') {
+        var context_view = new google.visualization.DataView(data_raw);
+        context_view.setRows(
+            context_view.getFilteredRows([{ column: 0, minValue: new Date(start_date) }])
+        )
+        context_view.setColumns([col1, col2])
+        var chart = eval("new google.visualization." + chartType + "(document.getElementById('" + divID + "'))");
+        chart.draw(context_view, options);
+        // console.log(context_view)
+    }
+
+    //options then function for each historical chart
+    //historical earnings
+    var earnings_options = {
+        title: 'S&P500 earnings y/y',
+        legend: 'none',
+        chartArea: { 'width': '75%', 'height': '75%' },
+        vAxis: { format: 'percent' }
+    };
+    contextChart(0, 8, earnings_options, 'LineChart', 'earnings_chart');
+    //Treasury yield
+    var treasury_options = {
+        title: 'US 10yr Treasury Yield',
+        legend: 'none',
+        chartArea: { 'width': '75%', 'height': '75%' },
+        vAxis: { format: 'percent' }
+    };
+    contextChart(0, 2, treasury_options, 'LineChart', 'treasury_chart');
+    //Risk Index
+    var risk_options = {
+        title: 'Risk Index',
+        legend: 'none',
+        chartArea: { 'width': '75%', 'height': '75%' }
+        // vAxis : {format:'percent'}
+    };
+    contextChart(0, 11, risk_options, 'LineChart', 'risk_chart');
+    //ERP
+    var erp_options = {
+        title: 'Equity Risk Premium',
+        legend: 'none',
+        chartArea: { 'width': '75%', 'height': '75%' },
+        vAxis: { format: 'percent' }
+    };
+    contextChart(0, 3, erp_options, 'LineChart', 'erp_chart');
+    //High Yield Credit Spread
+    var hys_options = {
+        title: 'High Yield Credit Spread',
+        legend: 'none',
+        chartArea: { 'width': '75%', 'height': '75%' },
+        vAxis: { format: 'percent' }
+    };
+    contextChart(0, 9, hys_options, 'LineChart', 'hys_chart');
+    //Inflation Expectations
+    var inf_options = {
+        title: 'Inflation Expectations',
+        legend: 'none',
+        chartArea: { 'width': '75%', 'height': '75%' },
+        vAxis: { format: 'percent' }
+    };
+    contextChart(0, 5, inf_options, 'LineChart', 'inf_chart');
+    //Gold/real rates scatter
+    gold_options = {
+        title: 'Gold/Real 10yr Yield',
+        hAxis: { title: 'Real 10yr Yield', format: 'percent' },
+        vAxis: { title: 'Gold ($/ounce)', format: 'short' },
+        legend: 'none',
+        chartArea: { 'width': '70%', 'height': '70%' }
+    }
+    contextChart(6, 4, gold_options, 'ScatterChart', 'gold_chart', '2019-11-01');
+    //Commodities/Infl Exp scatter
+    commods_options = {
+        title: 'Commodities/Inflation Expectations',
+        hAxis: { title: 'Inflation Expectations', format: 'percent'},
+        vAxis: { title: 'Commodities ($DBC)', format: 'short' },
+        legend: 'none',
+        chartArea: { 'width': '70%', 'height': '70%' }
+    }
+    contextChart(5, 12, commods_options, 'ScatterChart', 'commods_chart', '2020-05-01');
+
+}
+
+
+
 //These functions rerun relevant fair value functions, and then the model run function. Load the google charts api on each function
 function spxEXE() {
     google.charts.setOnLoadCallback(spx_fv_func);
@@ -409,13 +497,9 @@ function timeEXE() {
 /////////// FRED data scrape process for more reliable backend. Also, commods regression - lets do this now/first
             ////// Just migrate this process to lambda...will have to redo visualizations/entire script //// will do later when more users...
 /////////// Add scatter charts for context/adjust models?
+
+
+
 /////////// Once these 2 done, publish and start getting feedback.
 /////////// All of the design for the output charts
 /////////// All of the contextual visuals for the assumptions
-
-
-
-
-
-
-
