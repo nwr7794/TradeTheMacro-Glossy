@@ -158,8 +158,6 @@ function etf_fv_func() {
     // console.log(etf_fv)
 }
 
-
-
 function gold_fv_func() {
     // Gold FV - Inputs: treasury yield, inflation expec (1 yr regression)
     var yield_ass = parseFloat(document.getElementById('yield_ass').value)
@@ -310,10 +308,6 @@ function modelRun() {
         }
     }
 
-
-    ////// Here is where we will re arrange the columns as such: Name, return, hold p, last, tix. - actually not sure 
-    ////////////// Have to create a function for when momentum/reversion changes
-
     //Create pie chart and table
     var data = google.visualization.arrayToDataTable(output_sorted, false);
     var chart_view = new google.visualization.DataView(data);
@@ -439,8 +433,6 @@ function drawContext() {
 
 }
 
-
-
 //These functions rerun relevant fair value functions, and then the model run function. Load the google charts api on each function
 function spxEXE() {
     google.charts.setOnLoadCallback(spx_fv_func);
@@ -494,12 +486,3 @@ function timeEXE() {
     google.charts.setOnLoadCallback(modelRun);
 }
 
-/////////// FRED data scrape process for more reliable backend. Also, commods regression - lets do this now/first
-            ////// Just migrate this process to lambda...will have to redo visualizations/entire script //// will do later when more users...
-/////////// Add scatter charts for context/adjust models?
-
-
-
-/////////// Once these 2 done, publish and start getting feedback.
-/////////// All of the design for the output charts
-/////////// All of the contextual visuals for the assumptions
