@@ -59,7 +59,7 @@ function setInitialAssumption(assumption, colNum, initial, round) {
     var nominal_step = ((nominal_upper_bound - nominal_lower_bound) / 100).toFixed(round)
     var stringInput = '<label for="Predictor">' + label + ': </label><input type="range" class="range" min="' + nominal_lower_bound + '" max="' + nominal_upper_bound + '" step="' + nominal_step + '" value="' + nominal_last_val + '" id="' + assumption + '"><output class="bubble"></output><br>';
     // console.log(stringInput)
-    document.getElementById(assumption + '_head').innerHTML = stringInput
+    document.getElementById(assumption + '_head').innerHTML = stringInput 
 }
 
 function initialConditions() {
