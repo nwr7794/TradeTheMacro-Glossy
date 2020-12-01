@@ -56,7 +56,7 @@ function setInitialAssumption(assumption, colNum, initial, round) {
     var nominal_delta = nominal_range['max'] - nominal_range['min'];
     var nominal_lower_bound = (nominal_last_val - nominal_delta / 1).toFixed(round)
     var nominal_upper_bound = (nominal_last_val + nominal_delta / 1).toFixed(round)
-    var nominal_step = ((nominal_upper_bound - nominal_lower_bound) / 50).toFixed(round)
+    var nominal_step = ((nominal_upper_bound - nominal_lower_bound) / 100).toFixed(round)
     var stringInput = '<label for="Predictor">' + label + ': </label><input type="range" class="range" min="' + nominal_lower_bound + '" max="' + nominal_upper_bound + '" step="' + nominal_step + '" value="' + nominal_last_val + '" id="' + assumption + '"><output class="bubble"></output><br>';
     // console.log(stringInput)
     document.getElementById(assumption + '_head').innerHTML = stringInput
