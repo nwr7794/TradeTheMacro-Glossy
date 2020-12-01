@@ -226,13 +226,13 @@ function modelRun() {
     var names_arr = [['S&P 500', 'spx', 'SPY'], ['Gold', 'gold', 'GLD'], ['US 10yr Treasury', 'treasury', 'GOVT'], ['High Yield Debt', 'highYield', 'HYG'], ['Commodities', 'commods', 'DBC'], ['Cash', 'cash', '']]
     var time_ass = parseInt(document.getElementById('time_ass').value)
     // Calculate expected return
-    var output_data = [['Name', 'Exp Return (p.a.)', 'Last', 'Ticker']]; //Need to add allocation %
+    var output_data = [['Name', 'Return (p.a.)', 'Value', 'Last', 'Ticker']]; //Need to add allocation %
     for (i = 0; i < names_arr.length; i++) {
         // Name, Expected Return, Last, tix
         var last = eval(names_arr[i][1] + '_last')
         var fv = eval(names_arr[i][1] + '_fv')
         var expRet = (fv / last) ** (1 / time_ass) - 1 //annualized
-        var arr = [names_arr[i][0], expRet, last, names_arr[i][2]]
+        var arr = [names_arr[i][0], expRet, fv, last, names_arr[i][2]]
         output_data.push(arr)
     }
 
@@ -242,6 +242,7 @@ function modelRun() {
             output_data.push([
                 etf_fv[j][0],
                 etf_fv[j][2],
+                etf_fv[j][3] * (1+etf_fv[j][2])**time_ass,
                 etf_fv[j][3],
                 etf_fv[j][1]
             ]
@@ -312,9 +313,9 @@ function modelRun() {
     var data = google.visualization.arrayToDataTable(output_sorted, false);
     var chart_view = new google.visualization.DataView(data);
     chart_view.setRows(
-        chart_view.getFilteredRows([{ column: 4, minValue: 0.000001 }])
+        chart_view.getFilteredRows([{ column: 5, minValue: 0.000001 }])
     )
-    chart_view.setColumns([0, 4])
+    chart_view.setColumns([0, 5])
 
     var chart_options = {
         title: 'Asset Class Allocation (' + time_ass + ' yr)',
@@ -327,7 +328,7 @@ function modelRun() {
         width: '100%',
         height: '100%',
         allowHtml: true,
-        sortColumn: 4,
+        sortColumn: 5,
         sortAscending: false
     }
 
@@ -341,8 +342,9 @@ function modelRun() {
     var formatter = new google.visualization.NumberFormat(
         { negativeColor: "red", negativeParens: true, pattern: '#,###%' });
     formatter.format(data, 1);
-    formatter.format(data, 4);
+    formatter.format(data, 5);
     formatter1.format(data, 2);
+    formatter1.format(data, 3);
 
     var table = new google.visualization.Table(document.getElementById('table_div'));
     table.draw(data, table_options);
