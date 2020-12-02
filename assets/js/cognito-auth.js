@@ -112,7 +112,13 @@ var MacroFade = window.MacroFade || {};
         $('#signinForm').submit(handleSignin);
         $('#registrationForm').submit(handleRegister);
         $('#verifyForm').submit(handleVerify);
+        $('#signoutForm').submit(handleSignout);
     });
+
+    function handleSignout(event) {
+        MacroFade.signOut;
+    }
+
 
     function handleSignin(event) {
         var email = $('#emailInputSignin').val();
