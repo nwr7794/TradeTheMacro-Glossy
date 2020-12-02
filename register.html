@@ -46,7 +46,7 @@
 	<section id="banner">
 		<div class="inner">
 			<h1>Macro Fade</h1>
-			<p>ABOUT</p>
+			<p>REGISTER</p>
 		</div>
 		<video autoplay loop muted playsinline src="images/banner_stocks.mp4"></video>
 	</section>
@@ -55,13 +55,15 @@
 	<section id="main" class="wrapper">
 		<div class="inner">
 			<div class="content">
-				<header>
-					<h2>About the founder</h2>
-				</header>
-				<p> Hey there, my name is Robbie and I spent 4.5 years working as an analyst at a $40B hedge fund before deciding to leave and start building Macro Fade. 
-					I spend a lot of time managing my own investments, so I wanted to build a central dashboard for the analytics that drive my decision making.
-					My hope is that others will also find Macro Fade's analytics useful (and profitable) in supporting their investing decisions.
-				</p>
+				<h1>Register</h1>
+				<form id="registrationForm">
+					<input type="email" id="emailInputRegister" placeholder="Email" pattern=".*" required="">
+					<input type="password" id="passwordInputRegister" placeholder="Password" pattern=".*" required="">
+					<input type="password" id="password2InputRegister" placeholder="Confirm Password" pattern=".*" required="">
+					<input type="submit" value="Submit" class="button primary">
+				  </form>
+
+
 			</div>
 		</div>
 	</section>
@@ -97,9 +99,11 @@
 	<script src="assets/js/breakpoints.min.js"></script>
 	<script src="assets/js/util.js"></script>
 	<script src="assets/js/main.js"></script>
-	<!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-	<script src="assets/js/model.js"></script>
-	<script src="assets/js/slider.js"></script> -->
+	<!-- Load AWS required packages -->
+	<script src="assets/js/vendor/aws-cognito-sdk.min.js"></script>
+	<script src="assets/js/vendor/amazon-cognito-identity.min.js"></script>
+	<script src="assets/js/config.js"></script>
+	<script src="assets/js/cognito-auth.js"></script>
 
 </body>
 

@@ -23,7 +23,7 @@ function dataImport() {
         data_raw = response.getDataTable();
         data_array = data_raw.toJSON()
         data_array = JSON.parse(data_array)
-        console.log(data_raw)
+        // console.log(data_raw)
 
         //Set initial user input assumptions
         initialConditions();
