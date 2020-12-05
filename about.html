@@ -15,7 +15,7 @@
 		gtag('js', new Date());
 		gtag('config', 'G-285ZYVZRFM');
 	</script>
-	<title>Macro Fade</title>
+	<title>Macro Fade - About</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<meta name="description" content="" />
@@ -28,6 +28,12 @@
 	<!-- Header -->
 	<header id="header">
 		<a class="logo" href="index.html">Macro Fade</a>
+		<a></a>
+		<a></a>
+		<a></a>
+		<!-- Eventually this should link to a My Account Page -->
+		<div id="user"></div>
+		<!-- <a id="user"></a>  -->
 		<nav>
 			<a href="#menu">Menu</a>
 		</nav>
@@ -37,6 +43,7 @@
 	<nav id="menu">
 		<ul class="links">
 			<li><a href="index.html">Home</a></li>
+			<li><a href="model.html">Model</a></li>
 			<li><a href="blog.html">Blog</a></li>
 			<li><a href="about.html">About</a></li>
 		</ul>
@@ -58,9 +65,12 @@
 				<header>
 					<h2>About the founder</h2>
 				</header>
-				<p> Hey there, my name is Robbie and I spent 4.5 years working as an analyst at a $40B hedge fund before deciding to leave and start building Macro Fade. 
-					I spend a lot of time managing my own investments, so I wanted to build a central dashboard for the analytics that drive my decision making.
-					My hope is that others will also find Macro Fade's analytics useful (and profitable) in supporting their investing decisions.
+				<p> Hey there, my name is Robbie and I spent 4.5 years working as an analyst at a $40B hedge fund before
+					deciding to leave and start building Macro Fade.
+					I spend a lot of time managing my own investments, so I wanted to build a central dashboard for the
+					analytics that drive my decision making.
+					My hope is that others will also find Macro Fade's analytics useful (and profitable) in supporting
+					their investing decisions.
 				</p>
 			</div>
 		</div>
@@ -91,15 +101,17 @@
 		</div>
 	</footer>
 
-	<!-- Scripts -->
+	<!-- Load AWS required packages -->
 	<script src="assets/js/vendor/jquery.min.js"></script>
+	<script src="assets/js/vendor/aws-cognito-sdk.min.js"></script>
+	<script src="assets/js/vendor/amazon-cognito-identity.min.js"></script>
+	<script src="assets/js/config.js"></script>
+	<script src="assets/js/cognito-auth.js"></script>
+	<!-- Scripts -->
 	<script src="assets/js/browser.min.js"></script>
 	<script src="assets/js/breakpoints.min.js"></script>
 	<script src="assets/js/util.js"></script>
 	<script src="assets/js/main.js"></script>
-	<!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-	<script src="assets/js/model.js"></script>
-	<script src="assets/js/slider.js"></script> -->
 
 </body>
 

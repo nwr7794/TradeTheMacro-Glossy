@@ -15,7 +15,7 @@
 		gtag('js', new Date());
 		gtag('config', 'G-285ZYVZRFM');
 	</script>
-	<title>Macro Fade</title>
+	<title>Macro Fade - Sign in</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<meta name="description" content="" />
@@ -28,15 +28,23 @@
 	<!-- Header -->
 	<header id="header">
 		<a class="logo" href="index.html">Macro Fade</a>
+		<a></a>
+		<a></a>
+		<a></a>
+		<!-- Eventually this should link to a My Account Page -->
+		<div id="user"></div>
+		<!-- <a id="user"></a>  -->
 		<nav>
 			<a href="#menu">Menu</a>
 		</nav>
 	</header>
 
+
 	<!-- Nav -->
 	<nav id="menu">
 		<ul class="links">
 			<li><a href="index.html">Home</a></li>
+			<li><a href="model.html">Model</a></li>
 			<li><a href="blog.html">Blog</a></li>
 			<li><a href="about.html">About</a></li>
 		</ul>
@@ -60,9 +68,12 @@
 					<input type="email" id="emailInputSignin" placeholder="Email" required="">
 					<input type="password" id="passwordInputSignin" placeholder="Password" pattern=".*" required="">
 					<input type="submit" value="Sign in" class="button primary">
-				  </form>
-				  <form id="signoutForm">
-				  <input type="submit" value="Sign out" class="button primary">
+				</form>
+				<form id="signoutForm">
+					<input type="submit" value="Sign out" class="button primary">
+				</form>
+				<form action="register.html">
+					<input type="submit" value="Register" class="button primary" />
 				</form>
 
 			</div>
@@ -94,17 +105,17 @@
 		</div>
 	</footer>
 
-	<!-- Scripts -->
-	<script src="assets/js/vendor/jquery.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
 	<!-- Load AWS required packages -->
+	<script src="assets/js/vendor/jquery.min.js"></script>
 	<script src="assets/js/vendor/aws-cognito-sdk.min.js"></script>
 	<script src="assets/js/vendor/amazon-cognito-identity.min.js"></script>
 	<script src="assets/js/config.js"></script>
 	<script src="assets/js/cognito-auth.js"></script>
+	<!-- Scripts -->
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
 
 </body>
 

@@ -2,6 +2,7 @@
 
 var MacroFade = window.MacroFade || {};
 
+
 (function scopeWrapper($) {
     var signinUrl = '/signin.html';
 
@@ -20,6 +21,14 @@ var MacroFade = window.MacroFade || {};
     }
 
     userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+    // console.log(userPool.getCurrentUser())
+    // Show current user in nav bar, or offer sign in/sign up
+    if (userPool.getCurrentUser() === null){
+        document.getElementById('user').innerHTML = 
+        '<a class="logo" href="signin.html">Sign in/Sign Up</a>';
+    } else{
+    document.getElementById('user').innerHTML =  '<a href="index.html">' + userPool.getCurrentUser().username.replace("-at-", "@") + '</a>';
+}
 
     if (typeof AWSCognito !== 'undefined') {
         AWSCognito.config.region = _config.cognito.region;
@@ -116,9 +125,8 @@ var MacroFade = window.MacroFade || {};
     });
 
     function handleSignout(event) {
-        MacroFade.signOut;
+        MacroFade.signOut();
     }
-
 
     function handleSignin(event) {
         var email = $('#emailInputSignin').val();

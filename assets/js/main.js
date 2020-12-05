@@ -43,3 +43,7 @@
 			});
 
 })(jQuery);
+
+
+// Show current user or login button on header menu
+// userPool.getCurrentUser()
