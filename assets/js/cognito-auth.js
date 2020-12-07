@@ -28,6 +28,7 @@ var MacroFade = window.MacroFade || {};
         '<a class="logo" href="signin.html">Sign in/Sign Up</a>';
     } else{
     document.getElementById('user').innerHTML =  '<a href="index.html">' + userPool.getCurrentUser().username.replace("-at-", "@") + '</a>';
+    // document.getElementById('user1').innerHTML =  '<h2>' + userPool.getCurrentUser().username.replace("-at-", "@") + '</h2>';
 }
 
     if (typeof AWSCognito !== 'undefined') {
@@ -135,7 +136,7 @@ var MacroFade = window.MacroFade || {};
         signin(email, password,
             function signinSuccess() {
                 console.log('Successfully Logged In');
-                window.location.href = 'index.html'; // Will want to change this eventually /////////
+                window.location.href = 'user.html'; 
             },
             function signinError(err) {
                 alert(err);

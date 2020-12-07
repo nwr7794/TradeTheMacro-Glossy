@@ -6,6 +6,6 @@ window._config = {
         // ,authenticationFlowType: 'USER_PASSWORD_AUTH' // Test
     },
     api: {
-        invokeUrl: '' // e.g. https://rc7nyt4tql.execute-api.us-west-2.amazonaws.com/prod',
+        invokeUrl: 'https://ctmxc06604.execute-api.us-east-2.amazonaws.com/prod' // e.g. https://rc7nyt4tql.execute-api.us-west-2.amazonaws.com/prod',
     }
 };
