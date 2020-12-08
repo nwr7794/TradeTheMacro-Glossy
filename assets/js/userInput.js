@@ -17,8 +17,7 @@ var MacroFade = window.MacroFade || {};
     function insertPosition(userInputs) {
         $.ajax({
             method: 'POST',
-            // url: _config.api.invokeUrl + '/user',
-            url: _config.api.invokeUrl,
+            url: _config.api.invokeUrl + '/user',
             headers: {
                 Authorization: authToken
             },
