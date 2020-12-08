@@ -17,7 +17,8 @@ var MacroFade = window.MacroFade || {};
     function insertPosition(userInputs) {
         $.ajax({
             method: 'POST',
-            url: _config.api.invokeUrl + '/user',
+            // url: _config.api.invokeUrl + '/user',
+            url: _config.api.invokeUrl,
             headers: {
                 Authorization: authToken
             },
@@ -38,18 +39,6 @@ var MacroFade = window.MacroFade || {};
 
     function completeRequest(result) {
         console.log('Position successfully added')        
-        // var unicorn;
-        // var pronoun;
-        // console.log('Response received from API: ', result);
-        // unicorn = result.Unicorn;
-        // pronoun = unicorn.Gender === 'Male' ? 'his' : 'her';
-        // displayUpdate(unicorn.Name + ', your ' + unicorn.Color + ' unicorn, is on ' + pronoun + ' way.');
-        // animateArrival(function animateCallback() {
-        //     displayUpdate(unicorn.Name + ' has arrived. Giddy up!');
-        //     WildRydes.map.unsetLocation();
-        //     $('#request').prop('disabled', 'disabled');
-        //     $('#request').text('Set Pickup');
-        // });
     }
 
     // Register click handler for #add button
