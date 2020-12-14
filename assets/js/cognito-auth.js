@@ -14,8 +14,8 @@ var MacroFade = window.MacroFade || {};
     var userPool;
 
     if (!(_config.cognito.userPoolId &&
-          _config.cognito.userPoolClientId &&
-          _config.cognito.region)) {
+        _config.cognito.userPoolClientId &&
+        _config.cognito.region)) {
         $('#noCognitoMessage').show();
         return;
     }
@@ -23,13 +23,13 @@ var MacroFade = window.MacroFade || {};
     userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
     // console.log(userPool.getCurrentUser())
     // Show current user in nav bar, or offer sign in/sign up
-    if (userPool.getCurrentUser() === null){
-        document.getElementById('user').innerHTML = 
-        '<a class="logo" href="signin.html">Sign in/Sign Up</a>';
-    } else{
-    document.getElementById('user').innerHTML =  '<a href="user.html">' + userPool.getCurrentUser().username.replace("-at-", "@") + '</a>';
-    // document.getElementById('user1').innerHTML =  '<h2>' + userPool.getCurrentUser().username.replace("-at-", "@") + '</h2>';
-}
+    if (userPool.getCurrentUser() === null) {
+        document.getElementById('user').innerHTML =
+            '<a class="logo" href="signin.html">Sign in/Sign Up</a>';
+    } else {
+        document.getElementById('user').innerHTML = '<a href="user.html">' + userPool.getCurrentUser().username.replace("-at-", "@") + '</a>';
+        document.getElementById('menuSignout').outerHTML = '<a id="menuSignout" href="signin.html" >Sign Out</a>';
+    }
 
     if (typeof AWSCognito !== 'undefined') {
         AWSCognito.config.region = _config.cognito.region;
@@ -123,6 +123,7 @@ var MacroFade = window.MacroFade || {};
         $('#registrationForm').submit(handleRegister);
         $('#verifyForm').submit(handleVerify);
         $('#signoutForm').submit(handleSignout);
+        $('#menuSignout').click(handleSignout);
     });
 
     function handleSignout(event) {
@@ -136,7 +137,7 @@ var MacroFade = window.MacroFade || {};
         signin(email, password,
             function signinSuccess() {
                 console.log('Successfully Logged In');
-                window.location.href = 'user.html'; 
+                window.location.href = 'user.html';
             },
             function signinError(err) {
                 alert(err);

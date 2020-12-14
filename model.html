@@ -47,6 +47,7 @@
 			<li><a href="model.html">Model</a></li>
 			<li><a href="blog.html">Blog</a></li>
 			<li><a href="about.html">About</a></li>
+			<li><div id="menuSignout"></div></li>
 		</ul>
 	</nav>
 
@@ -237,6 +238,7 @@
 	<!-- Model Output -->
 	<section class="wrapper">
 		<div class="inner">
+
 			<header class="special">
 				<h2>Output</h2>
 				<p>The results!</p>
@@ -250,8 +252,37 @@
 				<section>
 					<div class="content" id="table_div" style="width: 100%; height: 350px;"></div>
 				</section>
-
 			</div>
+
+			<header id="saveShow" class="special">
+				<h3>Save your assumptions</h3>
+				<form id="saveAssumptions">
+					<input type="name" id="nameInput" placeholder="Name this Senario" required="">
+					<input type="submit" value="Save" class="button primary" onclick="alert('Assumptions Saved')">
+				</form>
+				<!-- Past saved scenarios, should add ability to favorite? -->
+				<h4>~Available Soon~ Click on a saved scenario to load it into the model</h4>
+				<div class="content" id="table_scenario_div" style="width: 100%; height: 350px;"></div>
+
+			</header>
+
+			<header id="loginShow" class="special">
+				<h3>Log in or register to save your scenarios!</h3>
+				<button class="button primary center" onclick="window.location.href='signin.html'">Sign in</button>
+				<button class="button primary center" onclick="window.location.href='register.html'">Sign up</button>
+			</header>
+
+
+			<!-- Here is where we will put historical saved models for the user to load (if they are logged in) -->
+			<!-- Will need to implement grabbing data from the db and displaying in a clickable table (proabbly google actually) -->
+			<!-- Process: Grab Data if user logged in (add get to API or create new one?), build google table -->
+			<!-- Need to update nav bars in html, make model the home page again? Or maybe create landing page with PA,model,blog,email as options -->
+			<!-- Daily email summaries? Next idea...
+				could morph to daily email summaries with top movers/trade ideas - like momentum, rveersion, upcoming earnings -->
+
+
+
+
 		</div>
 	</section>
 
@@ -287,6 +318,7 @@
 	<script src="assets/js/vendor/amazon-cognito-identity.min.js"></script>
 	<script src="assets/js/config.js"></script>
 	<script src="assets/js/cognito-auth.js"></script>
+
 	<!-- Scripts -->
 	<script src="assets/js/browser.min.js"></script>
 	<script src="assets/js/breakpoints.min.js"></script>
@@ -295,6 +327,7 @@
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script src="assets/js/model.js"></script>
 	<script src="assets/js/slider.js"></script>
+	<script src="assets/js/userAssumption.js"></script>
 
 </body>
 
