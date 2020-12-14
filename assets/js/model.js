@@ -260,11 +260,18 @@ function modelRun() {
     //     [0.1, 0.15, 0.2, 0.25, 0.3], // 3 Year
     //     [0.07, 0.1, 0.13, 0.17, 0.2] // 5 Year
     // ];
+    // var minReturn_arr = [
+    //     [0.2, 0.2, 0.2, 0.2, 0.2], // 1 Year
+    //     [0.15, 0.15, 0.15, 0.15, 0.15], // 3 Year
+    //     [0.1, 0.1, 0.1, 0.1, 0.1] // 5 Year
+    // ];
     var minReturn_arr = [
-        [0.5, 0.5, 0.5, 0.5, 0.5], // 1 Year
-        [0.25, 0.25, 0.25, 0.25, 0.5], // 3 Year
-        [0.17, 0.17, 0.17, 0.17, 0.17] // 5 Year
+        [0.12, 0.12, 0.12, 0.12, 0.12], // 1 Year
+        [0.12, 0.12, 0.12, 0.12, 0.12], // 3 Year
+        [0.12, 0.12, 0.12, 0.12, 0.12] // 5 Year
     ];
+
+
     var minReturn = minReturn_arr[(time_ass - 1) / 2][parseInt(document.getElementById('concentration_ass').value) - 1]
     // Now we have min return required for max position. Use 1% increments to generate curve: 65% exp, 35% linear
     var curveLowerBound = 0.01
