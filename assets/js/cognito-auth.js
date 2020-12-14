@@ -137,7 +137,7 @@ var MacroFade = window.MacroFade || {};
         signin(email, password,
             function signinSuccess() {
                 console.log('Successfully Logged In');
-                window.location.href = 'user.html';
+                window.location.href = 'model.html';
             },
             function signinError(err) {
                 alert(err);

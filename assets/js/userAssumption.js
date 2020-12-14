@@ -95,21 +95,78 @@ var MacroFade = window.MacroFade || {};
 
 
     function completePull(result) {
-        console.log(result)
+        // console.log(result)
         // Build the data table of saved scenarios
         var data = new google.visualization.DataTable()
         data.addColumn('string', 'Scenario Name');
         data.addColumn('date', 'Date Saved');
-        // data.addColumn('boolean', 'Favorite'); // Will add the checkmark bool boxes later, will also have to add that to DB...
+        data.addColumn('string', 'Concentration');
+        data.addColumn('string', 'Earnings');
+        data.addColumn('string', 'Erp');
+        data.addColumn('string', 'Hys');
+        data.addColumn('string', 'Inflation');
+        data.addColumn('string', 'Risk');
+        data.addColumn('string', 'Sector');
+        data.addColumn('string', 'Time');
+        data.addColumn('string', 'Treasury');
+
+        // data.addColumn('boolean', 'Favorite'); // Will add the checkmark bool boxes later, will also have to add that to DB... ////
+
         for (i = 0; i < result.length; i++) {
             data.addRow(
-                [result[i].Name, new Date(result[i].InputDate)]
+                [result[i].Name, new Date(result[i].InputDate), result[i].Concentration,
+                result[i].Earnings, result[i].Erp, result[i].Hys,
+                result[i].Inflation, result[i].Risk, result[i].Sector,
+                result[i].Time, result[i].Treasury]
             );
         }
-        console.log(data)
+
+        var view = new google.visualization.DataView(data)
+        view.setColumns([0, 1]);
+
+        // console.log(data)
         var table = new google.visualization.Table(document.getElementById('table_scenario_div'));
-        table.draw(data, table_options);
+        table.draw(view, table_options);
+
+
+
+
+        //Event listener to load assumptions when clicker
+        google.visualization.events.addListener(table, 'select', selectHandler);
+
+        // Handle event listener
+        function selectHandler() {
+            if (typeof table.getSelection()[0] != 'undefined') {
+                var row = table.getSelection()[0].row
+                // console.log(data.getValue(row, 0))
+                //When clicked set assumptions to saved values, then rerun model
+                document.getElementById("concentration_ass").value = data.getValue(row, 2);
+                document.getElementById("earnings_ass").value = data.getValue(row, 3);
+                document.getElementById("erp_ass").value = data.getValue(row, 4);
+                document.getElementById("hys_ass").value = data.getValue(row, 5);
+                document.getElementById("inflation_ass").value = data.getValue(row, 6);
+                document.getElementById("risk_ass").value = data.getValue(row, 7);
+                document.getElementById("etf_ass").value = data.getValue(row, 8);
+                document.getElementById("time_ass").value = data.getValue(row, 9);
+                document.getElementById("yield_ass").value = data.getValue(row, 10);
+
+                // Run fair value functions
+                spx_fv_func();
+                gold_fv_func();
+                treasury_fv_func();
+                highYield_fv_func();
+                commods_fv_func();
+                cash_fv_func();
+                modelRun();
+                drawContext();
+                slider_function(); //Reset slider bubbles
+
+            }
+        }
+
     }
+
+
 
     // Register click handler for #add button
     $(function onDocReady() {
@@ -144,6 +201,8 @@ var MacroFade = window.MacroFade || {};
         console.log(userInputs)
         event.preventDefault();
         insertScenario(userInputs)
+        $("#saveAssumptions")[0].reset();
+        
     }
 
 }(jQuery));
