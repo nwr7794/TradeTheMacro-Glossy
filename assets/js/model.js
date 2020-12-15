@@ -79,7 +79,7 @@ function initialConditions() {
     // Inflation Expectations (use last)
     setInitialAssumption('inflation_ass', 5, 'last', 4);
     // Portfolio concentration (Use balanced: 1)
-    document.getElementById('concentration_ass_head').innerHTML = '<label for="Predictor">Portfolio Concentration: </label><input type="range" class="range" min="1" max="5" step="1" value="3" id="concentration_ass"><output class="bubble"></output><br>';
+    document.getElementById('concentration_ass_head').innerHTML = '<label for="Predictor">Portfolio Concentration: </label><input type="range" class="range" min="1" max="5" step="1" value="1" id="concentration_ass"><output class="bubble"></output><br>';
     // Time Horizon (1 year)
     document.getElementById('time_ass_head').innerHTML = '<label for="Predictor">Time Horizon: </label><input type="range" class="range" min="1" max="5" step="2" value="1" id="time_ass"><output class="bubble"></output><br>';
     //Run function that makes slider work after divs are loaded
