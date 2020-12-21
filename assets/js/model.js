@@ -2,6 +2,56 @@
 google.charts.load('47', { 'packages': ['corechart', 'table'] });
 // Set a callback to run when the Google Visualization API is loaded.
 google.charts.setOnLoadCallback(dataImport);
+// If user logged in, also grab individual stock data
+var poolData = {
+    UserPoolId: _config.cognito.userPoolId,
+    ClientId: _config.cognito.userPoolClientId
+};
+var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+if (userPool.getCurrentUser() != null) {
+    // dataImportStocks();
+    google.charts.setOnLoadCallback(dataImportStocks);
+}
+
+
+function dataImportStocks() {
+    var queryString = encodeURIComponent("SELECT * ");
+
+    var query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1fvuBTNtYMjV4JOwl9OKRDbRYS4F2nTOCJmhr40WHcYM/gviz/tq?sheet=Stock_Fundies&headers=1&tq=' + queryString);
+    query.send(handleSampleDataQueryResponse);
+
+    function handleSampleDataQueryResponse(response) {
+
+        if (response.isError()) {
+            alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+            return;
+        }
+
+        stocks_raw = response.getDataTable();
+        stocks_array = stocks_raw.toJSON()
+        stocks_array = JSON.parse(stocks_array)
+        console.log(stocks_raw)
+    }
+
+    var query1 = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1fvuBTNtYMjV4JOwl9OKRDbRYS4F2nTOCJmhr40WHcYM/gviz/tq?sheet=ETF_Holdings&headers=1&tq=' + queryString);
+    query1.send(handleSampleDataQueryResponse1);
+
+    function handleSampleDataQueryResponse1(response) {
+
+        if (response.isError()) {
+            alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+            return;
+        }
+
+        //convert data to array
+        etfs_raw = response.getDataTable();
+        etfs_array = etfs_raw.toJSON()
+        etfs_array = JSON.parse(etfs_array)
+        console.log(etfs_raw)
+    }
+
+}
+
 
 function dataImport() {
 
@@ -59,7 +109,7 @@ function setInitialAssumption(assumption, colNum, initial, round) {
     var nominal_step = ((nominal_upper_bound - nominal_lower_bound) / 100).toFixed(round)
     var stringInput = '<label for="Predictor">' + label + ': </label><input type="range" class="range" min="' + nominal_lower_bound + '" max="' + nominal_upper_bound + '" step="' + nominal_step + '" value="' + nominal_last_val + '" id="' + assumption + '"><output class="bubble"></output><br>';
     // console.log(stringInput)
-    document.getElementById(assumption + '_head').innerHTML = stringInput 
+    document.getElementById(assumption + '_head').innerHTML = stringInput
 }
 
 function initialConditions() {
@@ -242,7 +292,7 @@ function modelRun() {
             output_data.push([
                 etf_fv[j][0],
                 etf_fv[j][2],
-                etf_fv[j][3] * (1+etf_fv[j][2])**time_ass,
+                etf_fv[j][3] * (1 + etf_fv[j][2]) ** time_ass,
                 etf_fv[j][3],
                 etf_fv[j][1]
             ]
@@ -355,6 +405,64 @@ function modelRun() {
 
     var table = new google.visualization.Table(document.getElementById('table_div'));
     table.draw(data, table_options);
+
+    //Add Event listener, will any show stock in etf if user logged in
+    if (userPool.getCurrentUser() != null) {
+        google.visualization.events.addListener(table, 'select', selectHandler1);
+        function selectHandler1() {
+            if (typeof table.getSelection()[0] != 'undefined') {
+                // If row clicked then: get Ticker from selection, get list fo stocks in that ETF, 
+                // filter raw stock data for those stocks, and build table with last valuation metrics sorted by P/E ascending
+                var etf = data.getValue(table.getSelection()[0].row, 4)
+                var rows = etfs_raw.getFilteredRows([{ column: 0, value: etf }])
+                var tix = []
+                for (i = 0; i < rows.length; i++) {
+                    tix.push(etfs_array.rows[rows[i]]["c"][1]["v"])
+                }
+                // tix has required tickers, now grab fundy data for those tix and create table
+                var data_out = []
+                // Find first instance of ticker (last update), for P/E < 1 put NA, P/S < 0 NA
+                for (j = 0; j < stocks_array.rows.length; j++) {
+                    var row = stocks_array.rows[j]["c"]
+                    if (tix.includes(row[0]["v"]) === true) {
+                        if(row[2]["v"] < 1){var pe = null} else{var pe = row[2]["v"]}
+                        if(row[4]["v"] < 0){var ps = null} else{var ps = row[4]["v"]}
+                        data_out.push([row[0]["v"], pe, ps])
+                        // then remove from index
+                        for (var i = 0; i < tix.length; i++) {
+                            if (tix[i] === row[0]["v"]) {
+                                tix.splice(i, 1);
+                            }
+                        }
+                    }
+                }
+                var stocks_table_data = new google.visualization.DataTable()
+                stocks_table_data.addColumn('string', 'Ticker')
+                // stocks_table_data.addColumn('date', 'LastUpdate')
+                stocks_table_data.addColumn('number', 'P/E')
+                stocks_table_data.addColumn('number', 'P/S')
+                stocks_table_data.addRows(data_out)                
+                
+                var table_options = {
+                    width: '100%',
+                    height: '100%',
+                    allowHtml: true,
+                    sortColumn: 1,
+                    sortAscending: true
+                }
+                var stocks_table = new google.visualization.Table(document.getElementById('indivStocksT'));
+                // document.getElementById('indivStocksT')
+                // StockTable
+                $("#indivStocksH").html('<h3><b>' + etf + '</b></h3>');
+                // document.getElementById('StockTable').innerHTML = stringInput
+                stocks_table.draw(stocks_table_data, table_options);
+
+            }
+        }
+    } else{
+        // if not signed in, show buttons
+        $("#indivStocksT").html('Must be logged in<br><br><button class="button primary center" onclick="window.location.href="signin.html"">Sign in</button><br><br><button class="button primary center" onclick="window.location.href="register.html"">Sign up</button>')
+    }
 }
 
 function drawContext() {
@@ -433,7 +541,7 @@ function drawContext() {
     //Commodities/Infl Exp scatter
     commods_options = {
         title: 'Commodities/Inflation Expectations',
-        hAxis: { title: 'Inflation Expectations', format: 'percent'},
+        hAxis: { title: 'Inflation Expectations', format: 'percent' },
         vAxis: { title: 'Commodities ($DBC)', format: 'short' },
         legend: 'none',
         chartArea: { 'width': '70%', 'height': '70%' }
@@ -441,6 +549,7 @@ function drawContext() {
     contextChart(5, 12, commods_options, 'ScatterChart', 'commods_chart', '2020-05-01');
 
 }
+
 
 //These functions rerun relevant fair value functions, and then the model run function. Load the google charts api on each function
 function spxEXE() {
@@ -470,7 +579,6 @@ function riskEXE() {
     google.charts.setOnLoadCallback(highYield_fv_func);
     google.charts.setOnLoadCallback(modelRun);
 }
-////////////////
 function erpEXE() {
     google.charts.setOnLoadCallback(spx_fv_func);
     google.charts.setOnLoadCallback(modelRun);
@@ -479,7 +587,6 @@ function hysEXE() {
     google.charts.setOnLoadCallback(highYield_fv_func);
     google.charts.setOnLoadCallback(modelRun);
 }
-////////////////
 function inflationEXE() {
     google.charts.setOnLoadCallback(gold_fv_func);
     google.charts.setOnLoadCallback(commods_fv_func);
@@ -494,4 +601,7 @@ function timeEXE() {
     google.charts.setOnLoadCallback(highYield_fv_func);
     google.charts.setOnLoadCallback(modelRun);
 }
+
+
+
 
