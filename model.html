@@ -47,7 +47,9 @@
 			<li><a href="model.html">Model</a></li>
 			<li><a href="blog.html">Blog</a></li>
 			<li><a href="about.html">About</a></li>
-			<li><div id="menuSignout"></div></li>
+			<li>
+				<div id="menuSignout"></div>
+			</li>
 		</ul>
 	</nav>
 
@@ -74,6 +76,7 @@
 				<p>Set your economic assumptions for the future to determine expected returns for each asset
 					class.</p>
 			</header>
+
 			<button class="button primary fit small collapsible">Methodology</button>
 			<div class="highlights contentCollapse">
 
@@ -118,123 +121,100 @@
 
 			</div>
 
-			<div class="highlights">
-				<section>
-					<div class="content">
-						<header>
-							<h3><b>Investment time horizon (years)</b></h3>
-						</header>
-						<form id="form6" onchange="timeEXE(); return false">
-							<div id="time_ass_head" class="range-wrap" style="width: 55%;"></div>
-						</form>
-					</div>
-				</section>
-
-				<section>
-					<div class="content">
-						<header>
-							<h3><b>Equities Assumptions</b></h3>
-						</header>
-						<p>S&P500 annual earnings % growth (using 2019 as baseline - pre COVID)</p>
-						<form id="form1" onchange="spxEXE(); return false">
-							<div id="earnings_ass_head" class="range-wrap percent" style="width: 55%;"></div>
-						</form>
-						<button class="button primary fit small collapsible">Historical</button>
-						<div class="contentCollapse">
-							<div class="image" id="earnings_chart" style="width: 100%; height: 225px;"></div>
-						</div>
-						<br>
-						<p><b>Include sector ETFs?</b><br>
-							<b><u>Reversion:</u></b> assumes over/under performers last 12 months revert back towards
-							S&P500
-							performance.<br>
-							<b><u>Momentum:</u></b> assumes over/under performers last 12 months continue to trend away
-							from
-							S&P500 performance.
-						</p>
-						<label for="etf_trend"><b>Sector trend assumption:</b></label>
-						<select name="etf_trend" id="etf_ass" onchange="etfEXE(); return false">
-							<option value="reversion">Reversion</option>
-							<option value="momentum">Momentum</option>
-							<option value="ignore">Don't include</option>
-						</select>
-
-
-					</div>
-				</section>
-
-				<section>
-					<div class="content">
-						<header>
-							<h3><b>US 10yr Treasury Yield</b></h3>
-						</header>
-						<form id="form2" onchange="treasuryEXE(); return false">
-							<div id="yield_ass_head" class="range-wrap percent" style="width: 55%;"></div>
-						</form>
-						<button class="button primary fit small collapsible">Historical</button>
-						<div class="contentCollapse">
-							<div class="image" id="treasury_chart" style="width: 100%; height: 225px;"></div>
-						</div>
-					</div>
-				</section>
-
-				<section>
-					<div class="content">
-						<header>
-							<h3><b>Risk Index</b></h3>
-						</header>
-						<p>Index generated from the equity risk premium and high yield credit spread.<br><b>Higher</b> =
-							more investor fear.<br> <b>0</b> = 10yr average.</p>
-						<form id="form3" onchange="riskEXE(); return false">
-							<div id="risk_ass_head" class="range-wrap" style="width: 55%;"></div>
-						</form>
-						<button class="button primary fit small collapsible">Details</button>
-						<div class="contentCollapse">
-							<div class="image" id="risk_chart" style="width: 100%; height: 225px;"></div>
-							<p>Adjust these sub-assumptions to override headline Risk assumption</p>
-							<form id="form7" onchange="erpEXE(); return false">
-								<div id="erp_ass_head" class="range-wrap percent" style="width: 55%;"></div>
-							</form>
-							<div class="image" id="erp_chart" style="width: 100%; height: 225px;"></div>
-							<form id="form8" onchange="hysEXE(); return false">
-								<div id="hys_ass_head" class="range-wrap percent" style="width: 55%;"></div>
-							</form>
-							<div class="image" id="hys_chart" style="width: 100%; height: 225px;"></div>
-						</div>
-					</div>
-				</section>
-
-				<section>
-					<div class="content">
-						<header>
-							<h3><b>Inflation Expectations</b></h3>
-						</header>
-						<p>Market implied inflation expectations</p>
-						<form id="form4" onchange="inflationEXE(); return false">
-							<div id="inflation_ass_head" class="range-wrap percent" style="width: 55%;"></div>
-						</form>
-						<button class="button primary fit small collapsible">Historical</button>
-						<div class="contentCollapse">
-							<div class="image" id="inf_chart" style="width: 100%; height: 225px;"></div>
-						</div>
-					</div>
-				</section>
-
-				<section>
-					<div class="content">
-						<header>
-							<h3><b>Portfolio Concentration</b></h3>
-						</header>
-						<p>Your tolerance for concentrated risk in your portfolio.<br>1 = max position: 40%<br> 5 = max
-							position: 100%
-						</p>
-						<form id="form5" onchange="concentrationEXE(); return false">
-							<div id="concentration_ass_head" class="range-wrap" style="width: 55%;"></div>
-						</form>
-					</div>
-				</section>
-
+			<!-- Time assumption -->
+			<div class="collapsibleModel">
+				<b>Investment time horizon (years):</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<form style="height: 100%; width: 30%;" id="form6" onchange="timeEXE(); return false">
+					<div id="time_ass_head" class="range-wrap" style="width: 100%;"></div>
+				</form>
+				<!-- <div class="symbolExpand"><b>+</b></div> -->
 			</div>
+			<!-- Equities assumption -->
+			<div class="collapsibleModel">
+				<b>S&P 500 annual earnings % growth </b>&nbsp;(using 2019 as baseline - pre
+				COVID):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<form style="height: 100%; width: 30%;" id="form1" onchange="spxEXE(); return false">
+					<div id="earnings_ass_head" class="range-wrap percent" style="width: 100%;"></div>
+				</form>
+				<div class="symbolExpand"><b>+</b></div>
+			</div>
+			<div class="contentCollapse">
+				<div class="image" id="earnings_chart" style="width: 100%; height: 225px;"></div>
+			</div>
+			<!-- Sector assumption -->
+			<div class="collapsibleModel">
+				<label for="etf_trend"><b>Sector trend assumption:</b></label>
+				<select name="etf_trend" id="etf_ass" onchange="etfEXE(); return false">
+					<option value="ignore">Don't include</option>
+					<option value="reversion">Reversion</option>
+					<option value="momentum">Momentum</option>
+				</select>
+				<div class="symbolExpand"><b>+</b></div>
+			</div>
+			<div class="contentCollapse">
+				<p>
+					<b><u>Reversion:</u></b> assumes over/under performers last 12 months revert back towards
+					S&P500
+					performance.<br>
+					<b><u>Momentum:</u></b> assumes over/under performers last 12 months continue to trend away
+					from
+					S&P500 performance.
+				</p>
+			</div>
+
+			<!-- Rates assumption -->
+			<div class="collapsibleModel">
+				<b>US 10yr Treasury Yield:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<form style="height: 100%; width: 30%;" id="form2" onchange="treasuryEXE(); return false">
+					<div id="yield_ass_head" class="range-wrap percent" style="width: 100%;"></div>
+				</form>
+				<div class="symbolExpand"><b>+</b></div>
+			</div>
+			<div class="contentCollapse">
+				<div class="image" id="treasury_chart" style="width: 100%; height: 225px;"></div>
+			</div>
+			<!-- Risk assumption -->
+			<div class="collapsibleModel">
+				<b>Risk Index</b>&nbsp;(Higher -> more investor fear, 0 -> average):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<form style="height: 100%; width: 30%;" id="form3" onchange="riskEXE(); return false">
+					<div id="risk_ass_head" class="range-wrap" style="width: 100%;"></div>
+				</form>
+				<div class="symbolExpand"><b>+</b></div>
+			</div>
+			<div class="contentCollapse">
+				<div class="image" id="risk_chart" style="width: 100%; height: 225px;"></div>
+				<p>Adjust the following sub-assumptions to override headline Risk assumption</p>
+				<b>Equity Risk Premium</b>
+				<form id="form7" onchange="erpEXE(); return false">
+					<div id="erp_ass_head" class="range-wrap percent" style="width: 30%;"></div>
+				</form>
+				<div class="image" id="erp_chart" style="width: 100%; height: 225px;"></div>
+				<b>High Yield Credit Spreads</b>
+				<form id="form8" onchange="hysEXE(); return false">
+					<div id="hys_ass_head" class="range-wrap percent" style="width: 30%;"></div>
+				</form>
+				<div class="image" id="hys_chart" style="width: 100%; height: 225px;"></div>
+			</div>
+			<!-- Inflation assumption -->
+			<div class="collapsibleModel">
+				<b>Inflation Expectations:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<form style="height: 100%; width: 30%;" id="form4" onchange="inflationEXE(); return false">
+					<div id="inflation_ass_head" class="range-wrap percent" style="width: 100%;"></div>
+				</form>
+				<div class="symbolExpand"><b>+</b></div>
+			</div>
+			<div class="contentCollapse">
+				<div class="image" id="inf_chart" style="width: 100%; height: 225px;"></div>
+			</div>
+			<!-- Concentration assumption -->
+			<div class="collapsibleModel">
+				<b>Portfolio Concentration:</b>&nbsp;(max asset class position: 40% - 100%)&nbsp;&nbsp;&nbsp;&nbsp;
+				<form style="height: 100%; width: 30%;" id="form5" onchange="concentrationEXE(); return false">
+					<div id="concentration_ass_head" class="range-wrap" style="width: 100%;"></div>
+				</form>
+				<!-- <div class="symbolExpand"><b>+</b></div> -->
+			</div>
+
 		</div>
 	</section>
 
@@ -247,47 +227,47 @@
 				<p>The results!</p>
 			</header>
 
-				<div class="modelOutput">
+			<div class="modelOutput">
 
-					<section>
-						<div class="content" id="donutchart" style="width: 100%; height: 350px;"></div>
-					</section>
+				<section>
+					<div class="content" id="donutchart" style="width: 100%; height: 350px;"></div>
+				</section>
 
-					<section>
-						<div class="content" id="table_div" style="width: 100%; height: 350px;"></div>
-					</section>
-				</div>
-
-				<!-- Individual stock ticker valuation -->
-				<button value="close" id="TestClick">Click ETF to show individual stocks</button>
-				<div id="StockTable" class="highlights contentCollapse">
-					<section>
-						<div id="indivStocksH"></div>
-						<div class="content" id="indivStocksT">
-							<h3><b>Click ETF to show individual stocks</b></h3>
-						</div>
-					</section>
-				</div>
-
-				<header id="saveShow" class="special">
-					<h3>Save your assumptions</h3>
-					<form id="saveAssumptions">
-						<input type="name" id="nameInput" placeholder="Name this Senario" required="">
-						<input type="submit" value="Save" class="button primary" onclick="alert('Assumptions Saved')">
-					</form>
-					<!-- Past saved scenarios, should add ability to favorite? -->
-					<h4>Click on a saved scenario to load it into the model</h4>
-					<div class="content" id="table_scenario_div" style="width: 100%; height: 350px;"></div>
-				</header>
-
-				<header id="loginShow" class="special">
-					<h3>Want to save your scenarios or view indivdual stocks (with valuation metrics)? Sign up today!</h3>
-					<button class="button primary center" onclick="window.location.href='signin.html'">Sign in</button>
-					<button class="button primary center" onclick="window.location.href='register.html'">Sign up</button>
-				</header>
-
-
+				<section>
+					<div class="content" id="table_div" style="width: 100%; height: 350px;"></div>
+				</section>
 			</div>
+
+			<!-- Individual stock ticker valuation -->
+			<button value="close" id="TestClick">Click ETF to show top stock holdings</button>
+			<div id="StockTable" class="highlights contentCollapse">
+				<section>
+					<div id="indivStocksH"></div>
+					<div class="content" id="indivStocksT">
+						<h3><b>Click an ETF!</b></h3>
+					</div>
+				</section>
+			</div>
+
+			<header id="saveShow" class="special">
+				<h3>Save your assumptions</h3>
+				<form id="saveAssumptions">
+					<input type="name" id="nameInput" placeholder="Name this Senario" required="">
+					<input type="submit" value="Save" class="button primary" onclick="alert('Assumptions Saved')">
+				</form>
+				<!-- Past saved scenarios, should add ability to favorite? -->
+				<h4>Click on a saved scenario to load it into the model</h4>
+				<div class="content" id="table_scenario_div" style="width: 100%; height: 350px;"></div>
+			</header>
+
+			<header id="loginShow" class="special">
+				<h3>Want to save your scenarios or view indivdual stocks (with valuation metrics)? Sign up today!</h3>
+				<button class="button primary center" onclick="window.location.href='signin.html'">Sign in</button>
+				<button class="button primary center" onclick="window.location.href='register.html'">Sign up</button>
+			</header>
+
+
+		</div>
 	</section>
 
 	<!-- Footer -->

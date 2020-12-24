@@ -16,9 +16,9 @@ function slider_function() {
         const min = range.min ? range.min : 0;
         const max = range.max ? range.max : 100;
         const newVal = Number(((val - min) * 100) / (max - min));
-        if(wrap.className === "range-wrap percent"){
-            bubble.innerHTML = ((val*100).toFixed(2) + "%");
-        } else{
+        if (wrap.className === "range-wrap percent") {
+            bubble.innerHTML = ((val * 100).toFixed(2) + "%");
+        } else {
             bubble.innerHTML = val;
         }
 
@@ -27,8 +27,10 @@ function slider_function() {
     }
 }
 
-//Collpasible script
-var coll = document.getElementsByClassName("collapsible");
+//Collapsible script
+// var type = ['collapsible']
+// for (j = 0; j < type.length; j++) {
+var coll = document.getElementsByClassName('collapsible');
 var i;
 
 for (i = 0; i < coll.length; i++) {
@@ -42,3 +44,37 @@ for (i = 0; i < coll.length; i++) {
         }
     });
 }
+// }
+
+//Collapsible script
+// Change div class to Collaspsible Model Active
+// var type = ['collapsibleModel']
+// for (j = 0; j < type.length; j++) {
+var coll1 = document.getElementsByClassName('collapsibleModel');
+// var coll1 = document.getElementsByClassName('symbolExpand');
+var j;
+
+
+// This works! makes clickable area for expanding bigger, then clean up, then create rest of assumptions
+
+for (j = 0; j < coll1.length; j++) {
+    // var symbol = this.getElementsByClassName('symbolExpand')
+    if (coll1[j].getElementsByClassName('symbolExpand')[0] != undefined) {
+        coll1[j].getElementsByClassName('symbolExpand')[0].addEventListener("click", function () {
+            // this.classList.toggle("active");
+            // var content = this.nextElementSibling;
+            var parent = this.parentElement;
+            var content = parent.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                this.innerHTML = '<b>+</b>'
+                // document.getElementById('symbolExpand').innerHTML = '<b>+</b>'
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                this.innerHTML = '<b>-</b>'
+                // document.getElementById('symbolExpand').innerHTML = '<b>-</b>'
+            }
+        });
+    }
+}
+// }

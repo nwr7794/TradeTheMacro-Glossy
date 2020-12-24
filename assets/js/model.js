@@ -30,7 +30,7 @@ function dataImportStocks() {
         stocks_raw = response.getDataTable();
         stocks_array = stocks_raw.toJSON()
         stocks_array = JSON.parse(stocks_array)
-        console.log(stocks_raw)
+        // console.log(stocks_raw)
     }
 
     var query1 = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1fvuBTNtYMjV4JOwl9OKRDbRYS4F2nTOCJmhr40WHcYM/gviz/tq?sheet=ETF_Holdings&headers=1&tq=' + queryString);
@@ -47,7 +47,7 @@ function dataImportStocks() {
         etfs_raw = response.getDataTable();
         etfs_array = etfs_raw.toJSON()
         etfs_array = JSON.parse(etfs_array)
-        console.log(etfs_raw)
+        // console.log(etfs_raw)
     }
 
 }
@@ -107,7 +107,8 @@ function setInitialAssumption(assumption, colNum, initial, round) {
     var nominal_lower_bound = (nominal_last_val - nominal_delta / 1).toFixed(round)
     var nominal_upper_bound = (nominal_last_val + nominal_delta / 1).toFixed(round)
     var nominal_step = ((nominal_upper_bound - nominal_lower_bound) / 100).toFixed(round)
-    var stringInput = '<label for="Predictor">' + label + ': </label><input type="range" class="range" min="' + nominal_lower_bound + '" max="' + nominal_upper_bound + '" step="' + nominal_step + '" value="' + nominal_last_val + '" id="' + assumption + '"><output class="bubble"></output><br>';
+    // var stringInput = '<label for="Predictor">' + label + ': </label><input type="range" class="range" min="' + nominal_lower_bound + '" max="' + nominal_upper_bound + '" step="' + nominal_step + '" value="' + nominal_last_val + '" id="' + assumption + '"><output class="bubble"></output><br>';
+    var stringInput = '<input type="range" class="range" min="' + nominal_lower_bound + '" max="' + nominal_upper_bound + '" step="' + nominal_step + '" value="' + nominal_last_val + '" id="' + assumption + '"><output class="bubble"></output><br>';
     // console.log(stringInput)
     document.getElementById(assumption + '_head').innerHTML = stringInput
 }
@@ -129,9 +130,11 @@ function initialConditions() {
     // Inflation Expectations (use last)
     setInitialAssumption('inflation_ass', 5, 'last', 4);
     // Portfolio concentration (Use balanced: 1)
-    document.getElementById('concentration_ass_head').innerHTML = '<label for="Predictor">Portfolio Concentration: </label><input type="range" class="range" min="1" max="5" step="1" value="1" id="concentration_ass"><output class="bubble"></output><br>';
+    // document.getElementById('concentration_ass_head').innerHTML = '<label for="Predictor">Portfolio Concentration: </label><input type="range" class="range" min="1" max="5" step="1" value="1" id="concentration_ass"><output class="bubble"></output><br>';
+    document.getElementById('concentration_ass_head').innerHTML = '<input type="range" class="range" min="1" max="5" step="1" value="1" id="concentration_ass"><output class="bubble"></output><br>';
     // Time Horizon (1 year)
-    document.getElementById('time_ass_head').innerHTML = '<label for="Predictor">Time Horizon: </label><input type="range" class="range" min="1" max="5" step="2" value="1" id="time_ass"><output class="bubble"></output><br>';
+    // document.getElementById('time_ass_head').innerHTML = '<label for="Predictor">Time Horizon: </label><input type="range" class="range" min="1" max="5" step="2" value="1" id="time_ass"><output class="bubble"></output><br>';
+    document.getElementById('time_ass_head').innerHTML = '<input type="range" class="range" min="1" max="5" step="1" value="1" id="time_ass"><output class="bubble"></output><br>';
     //Run function that makes slider work after divs are loaded
     slider_function();
     // Run initial fair value functions
@@ -225,7 +228,7 @@ function treasury_fv_func() {
     var par = 100;
     var coupon = data_raw.getValue(data_raw.getNumberOfRows() - 1, 2)
     var yield_ass = parseFloat(document.getElementById('yield_ass').value)
-    var time_ass = parseFloat(document.getElementById('time_ass').value)
+    var time_ass = parseInt(document.getElementById('time_ass').value)
     var future_price = (2 * par + 2 * (10 - time_ass) * coupon * par - (10 - time_ass) * yield_ass * par) / ((10 - time_ass) * yield_ass + 2)
     treasury_fv = future_price + par * coupon * time_ass
     treasury_last = par
@@ -246,7 +249,7 @@ function highYield_fv_func() {
 
     var par = 100;
     var coupon = data_raw.getValue(data_raw.getNumberOfRows() - 1, 2) + data_raw.getValue(data_raw.getNumberOfRows() - 1, 9)
-    var time_ass = parseFloat(document.getElementById('time_ass').value)
+    var time_ass = parseInt(document.getElementById('time_ass').value)
     var future_price = (2 * par + 2 * (10 - time_ass) * coupon * par - (10 - time_ass) * yield_ass * par) / ((10 - time_ass) * yield_ass + 2)
     highYield_fv = future_price + par * coupon * time_ass
     highYield_last = par
@@ -317,12 +320,13 @@ function modelRun() {
     // ];
     var minReturn_arr = [
         [0.12, 0.12, 0.12, 0.12, 0.12], // 1 Year
+        [0.12, 0.12, 0.12, 0.12, 0.12], // 2 Year
         [0.12, 0.12, 0.12, 0.12, 0.12], // 3 Year
+        [0.12, 0.12, 0.12, 0.12, 0.12], // 4 Year
         [0.12, 0.12, 0.12, 0.12, 0.12] // 5 Year
     ];
 
-
-    var minReturn = minReturn_arr[(time_ass - 1) / 2][parseInt(document.getElementById('concentration_ass').value) - 1]
+    var minReturn = minReturn_arr[time_ass - 1][parseInt(document.getElementById('concentration_ass').value) - 1]
     // Now we have min return required for max position. Use 1% increments to generate curve: 65% exp, 35% linear
     var curveLowerBound = 0.01
     var rateExp = (maxSize / curveLowerBound) ** (1 / (minReturn * 100)) //Assumes curve using 1% increments
@@ -425,8 +429,8 @@ function modelRun() {
                 for (j = 0; j < stocks_array.rows.length; j++) {
                     var row = stocks_array.rows[j]["c"]
                     if (tix.includes(row[0]["v"]) === true) {
-                        if(row[2]["v"] < 1){var pe = null} else{var pe = row[2]["v"]}
-                        if(row[4]["v"] < 0){var ps = null} else{var ps = row[4]["v"]}
+                        if (row[2]["v"] < 1) { var pe = null } else { var pe = row[2]["v"] }
+                        if (row[4]["v"] < 0) { var ps = null } else { var ps = row[4]["v"] }
                         data_out.push([row[0]["v"], pe, ps])
                         // then remove from index
                         for (var i = 0; i < tix.length; i++) {
@@ -441,8 +445,8 @@ function modelRun() {
                 // stocks_table_data.addColumn('date', 'LastUpdate')
                 stocks_table_data.addColumn('number', 'P/E')
                 stocks_table_data.addColumn('number', 'P/S')
-                stocks_table_data.addRows(data_out)                
-                
+                stocks_table_data.addRows(data_out)
+
                 var table_options = {
                     width: '100%',
                     height: '100%',
@@ -456,10 +460,13 @@ function modelRun() {
                 $("#indivStocksH").html('<h3><b>' + etf + '</b></h3>');
                 // document.getElementById('StockTable').innerHTML = stringInput
                 stocks_table.draw(stocks_table_data, table_options);
+                if (document.getElementById("TestClick").value == "close") {
+                    document.getElementById("TestClick").click()
+                }
 
             }
         }
-    } else{
+    } else {
         // if not signed in, show buttons
         $("#indivStocksT").html('Must be logged in<br><br><button class="button primary center" onclick="window.location.href="signin.html"">Sign in</button><br><br><button class="button primary center" onclick="window.location.href="register.html"">Sign up</button>')
     }
