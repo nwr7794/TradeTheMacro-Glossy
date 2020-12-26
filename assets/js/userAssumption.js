@@ -2,6 +2,17 @@
 
 var MacroFade = window.MacroFade || {};
 
+function deleteHandler() {
+    if (confirm('Are you sure you want to delete scenario: ' + deleteID + '? (Page will reload)')) {
+        // Run delete function and pass inputtime to it
+        deleteScenario(inputtime);
+        console.log('Thing was deleted');
+    } else { console.log('cancelled') }
+}
+var deleteID;
+var inputtime;
+var deleteScenario;
+
 (function inputScopeWrapper($) {
     var authToken;
     MacroFade.authToken.then(function setAuthToken(token) {
@@ -18,7 +29,6 @@ var MacroFade = window.MacroFade || {};
     }).catch(function handleTokenError(error) {
         alert(error);
     });
-
 
     function insertScenario(userInputs) {
         $.ajax({
@@ -50,8 +60,30 @@ var MacroFade = window.MacroFade || {};
         });
     }
 
-    ///////// Here add function that pulls users past scenarios if logged in /////////////
-    ///////// Uses different resource from same api to trigger the pull lamdba function. Clean up html/js/lambdas and organize.
+
+    // The delete scenario function
+    deleteScenario = function(inputtime) {
+        // console.log(authToken)
+        // console.log(inputtime)
+        $.ajax({
+            method: 'POST',
+            url: _config.api.invokeUrl + '/userdelete',
+            headers: {
+                Authorization: authToken
+            },
+            data: JSON.stringify({
+                InputTime: inputtime
+            }),
+            contentType: 'application/json',
+            success: completeDelete,
+            error: function ajaxError(jqXHR, textStatus, errorThrown) {
+                console.error('Error deleting scenario: ', textStatus, ', Details: ', errorThrown);
+                console.error('Response: ', jqXHR.responseText);
+                alert('An error occured when deleting your scenario:\n' + jqXHR.responseText);
+            }
+        });
+    }
+
     function getScenarios() {
         $.ajax({
             method: 'POST',
@@ -70,9 +102,15 @@ var MacroFade = window.MacroFade || {};
     }
 
     function completeRequest(result) {
-        console.log('Assumptions Saved')
+        console.log('Assumption saved')
         // Refresh saved scenarios
         getScenarios();
+    }
+
+    function completeDelete(result) {
+        // Reload page
+        location.reload()
+        // Doing this for performance - could switch back to simply refreshing scenarios
     }
 
     var table_options = {
@@ -82,17 +120,6 @@ var MacroFade = window.MacroFade || {};
         sortColumn: 1,
         sortAscending: false
     }
-
-    // //Format data for table and draw
-    // var formatter1 = new google.visualization.NumberFormat(
-    //     { fractionDigits: 0 });
-    // var formatter = new google.visualization.NumberFormat(
-    //     { negativeColor: "red", negativeParens: true, pattern: '#,###%' });
-    // formatter.format(data, 1);
-    // formatter.format(data, 5);
-    // formatter1.format(data, 2);
-    // formatter1.format(data, 3);
-
 
     function completePull(result) {
         // console.log(result)
@@ -109,27 +136,27 @@ var MacroFade = window.MacroFade || {};
         data.addColumn('string', 'Sector');
         data.addColumn('string', 'Time');
         data.addColumn('string', 'Treasury');
+        data.addColumn('string', '');
+        data.addColumn('number', 'Input Time');
 
-        // data.addColumn('boolean', 'Favorite'); // Will add the checkmark bool boxes later, will also have to add that to DB... ////
 
         for (i = 0; i < result.length; i++) {
             data.addRow(
                 [result[i].Name, new Date(result[i].InputDate), result[i].Concentration,
                 result[i].Earnings, result[i].Erp, result[i].Hys,
                 result[i].Inflation, result[i].Risk, result[i].Sector,
-                result[i].Time, result[i].Treasury]
+                result[i].Time, result[i].Treasury,
+                '<input type="button" value="DELETE" class="deleteButton" onClick="deleteHandler()" />',
+                result[i].InputTime]
             );
         }
 
         var view = new google.visualization.DataView(data)
-        view.setColumns([0, 1]);
+        view.setColumns([0, 1, 11]);
 
         // console.log(data)
         var table = new google.visualization.Table(document.getElementById('table_scenario_div'));
         table.draw(view, table_options);
-
-
-
 
         //Event listener to load assumptions when clicker
         google.visualization.events.addListener(table, 'select', selectHandler);
@@ -138,7 +165,9 @@ var MacroFade = window.MacroFade || {};
         function selectHandler() {
             if (typeof table.getSelection()[0] != 'undefined') {
                 var row = table.getSelection()[0].row
-                // console.log(data.getValue(row, 0))
+                deleteID = data.getValue(row, 0)
+                inputtime = data.getValue(row, 12)
+                // console.log(data.getValue(row, 1))
                 //When clicked set assumptions to saved values, then rerun model
                 document.getElementById("concentration_ass").value = data.getValue(row, 2);
                 document.getElementById("earnings_ass").value = data.getValue(row, 3);
@@ -163,9 +192,7 @@ var MacroFade = window.MacroFade || {};
 
             }
         }
-
     }
-
 
 
     // Register click handler for #add button
@@ -202,7 +229,7 @@ var MacroFade = window.MacroFade || {};
         event.preventDefault();
         insertScenario(userInputs)
         $("#saveAssumptions")[0].reset();
-        
+
     }
 
 }(jQuery));
