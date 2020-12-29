@@ -15,7 +15,7 @@
 		gtag('js', new Date());
 		gtag('config', 'G-285ZYVZRFM');
 	</script>
-	<title>Macro Fade - Robbie</title>
+	<title>Macro Fade - Live Allocation</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<meta name="description" content="" />
@@ -45,9 +45,12 @@
 		<ul class="links">
 			<li><a href="index.html">Home</a></li>
 			<li><a href="model.html">Model</a></li>
+			<li><a href="live.html">Live Portfolio</a></li>
 			<li><a href="blog.html">Blog</a></li>
 			<li><a href="about.html">About</a></li>
-			<li><div id="menuSignout"></div></li>
+			<li>
+				<div id="menuSignout"></div>
+			</li>
 		</ul>
 	</nav>
 
@@ -55,8 +58,7 @@
 	<section id="banner">
 		<div class="inner">
 			<h1>Macro Fade</h1>
-			<p>Run our models with YOUR assumptions.<br />
-				Pick the asset classes with the HIGHEST expected returns.</p>
+			<p>Live Portfolio</p>
 		</div>
 		<video autoplay loop muted playsinline src="images/banner_stocks.mp4" style="display: none;"></video>
 	</section>
@@ -66,24 +68,51 @@
 		<div class="inner">
 			<header class="special">
 				<h2>Robbie's Live Allocation</h2>
-				<p>Represents >95% of liquid assets</p>
+				<p>Represents >95% of his liquid assets</p>
 			</header>
-			<div class="modelOutput">
 
-				<section>
-					<div class="content" id="donutchart" style="width: 100%; height: 350px;"></div>
-				</section>
+			<header id="saveShow" class="special">
+				<div class="modelOutput">
 
-				<section>
-					<div class="content" id="table_div" style="width: 100%; height: 350px;"></div>
-				</section>
+					<section>
+						<div class="content" id="donutchart" style="width: 100%; height: 350px;"></div>
+					</section>
 
-            </div>
+					<section>
+						<div class="content" id="table_div" style="width: 100%; height: 350px;"></div>
+					</section>
 
-            <button class="button primary center" onclick="window.location.href='model.html'">Click here to check out the model!</button>
-        </div>
+				</div>
+			</header>
 
-    </section>
+			<header id="loginShow" class="special">
+				<h3>Want to view MacroFade's live portfolio?</h3>
+				<button class="button primary center" onclick="window.location.href='signin.html'">Sign in</button>
+				<br>
+				<h3>OR</h3>
+				<div class="premiumBox">
+					<ul>
+						<h3>Register for premium</h3>
+
+						<li>Save <u>unlimited</u> scenarios</li>
+						<li>Access our founder's <u>live portfolio</u> (and recieve notifications when it changes)</li>
+						<li>Quickly identify cheap stocks within etfs</li>
+						<li>Request new features that you want!</li>
+						<br>
+						<b>In return we hope that you'll hop on the phone with us for 15 minutes (max) to tell us about
+							anything you want added to MacroFade!</b>
+						<br>
+						<button class="button primary center" onclick="window.location.href='register.html'">Sign
+							up</button>
+					</ul>
+				</div>
+			</header>
+
+			<button class="button primary center" onclick="window.location.href='model.html'">Take me to the
+				model</button>
+		</div>
+
+	</section>
 
 	<!-- Footer -->
 	<footer id="footer">
@@ -124,6 +153,7 @@
 	<script src="assets/js/main.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script src="assets/js/pa.js"></script>
+	<script src="assets/js/userAssumption.js"></script>
 
 </body>
 
