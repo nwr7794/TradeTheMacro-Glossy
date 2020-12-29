@@ -27,7 +27,7 @@ var MacroFade = window.MacroFade || {};
         document.getElementById('user').innerHTML =
             '<a class="logo" href="signin.html">Sign in/Sign Up</a>';
     } else {
-        document.getElementById('user').innerHTML = '<a href="user.html">' + userPool.getCurrentUser().username.replace("-at-", "@") + '</a>';
+        document.getElementById('user').innerHTML = '<a href="model.html">' + userPool.getCurrentUser().username.replace("-at-", "@") + '</a>';
         document.getElementById('menuSignout').outerHTML = '<a id="menuSignout" href="signin.html" >Sign Out</a>';
     }
 

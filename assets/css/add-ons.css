@@ -94,6 +94,25 @@
     border-style: solid;
   }
 
+    /* Premium features box */
+    .premiumBox {
+      height: 125%;
+      background-color: white;
+      color: black;
+      margin: auto;
+      /* cursor: pointer; */
+      display: flex;
+      flex-direction: row;
+      padding: 5px;
+      width: 420px;
+      /* border: none; */
+      text-align: left;
+      outline: none;
+      font-size: 15px;
+      border: 1px black;
+      border-style: solid;
+    }
+
   .symbolExpand{
   margin-left: auto;
   text-align: center;

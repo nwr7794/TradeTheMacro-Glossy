@@ -468,7 +468,8 @@ function modelRun() {
         }
     } else {
         // if not signed in, show buttons
-        $("#indivStocksT").html('Must be logged in<br><br><button class="button primary center" onclick="window.location.href="signin.html"">Sign in</button><br><br><button class="button primary center" onclick="window.location.href="register.html"">Sign up</button>')
+        // $("#indivStocksT").html('Must be logged in<br><br><button class="button primary center" onclick="window.location.href="signin.html"">Sign in</button><br><br><button class="button primary center" onclick="window.location.href="register.html"">Sign up</button>')
+        $("#indivStocksT").html('Must be logged in')
     }
 }
 

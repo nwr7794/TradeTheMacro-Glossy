@@ -15,7 +15,7 @@
 		gtag('js', new Date());
 		gtag('config', 'G-285ZYVZRFM');
 	</script>
-	<title>Macro Fade - Register</title>
+	<title>Macro Fade - Methodology</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<meta name="description" content="" />
@@ -57,40 +57,54 @@
 	<section id="banner">
 		<div class="inner">
 			<h1>Macro Fade</h1>
-			<p>REGISTER</p>
+			<p>Methodology</p>
 		</div>
 		<video autoplay loop muted playsinline src="images/banner_stocks.mp4" style="display: none;"></video>
 	</section>
 
-	<!-- Main -->
-	<section id="main" class="wrapper">
+	<!-- Highlights -->
+	<section class="wrapper">
 		<div class="inner">
-			<div class="premiumBox">
-				<ul>
-					<h3>Register for premium</h3>
 
-					<li>Save your scenarios</li>
-					<li>Quickly identify cheap stocks within asset classes</li>
-					<li>Access MacroFade's current prtofolio</li>
-					<li>Recieve notifications when MacroFade's allocation changes</li>
-					<li>Request new features that you want!</li>
-					<br>
-					<b>In return we hope that you'll hop on the phone with us for 15 minutes (max) to tell us about
-						features that you want!</b>
-				</ul>
-			</div>
-			<div class="content">
-				<h1>Register</h1>
-				<form id="registrationForm">
-					<input type="email" id="emailInputRegister" placeholder="Email" pattern=".*" required="">
-					<input type="password" id="passwordInputRegister" placeholder="Password" pattern=".*" required="">
-					<input type="password" id="password2InputRegister" placeholder="Confirm Password" pattern=".*"
-						required="">
-					<input type="submit" value="Submit" class="button primary">
-				</form>
+				<section>
+					<div class="content">
+						<h3><b>Fair Value Methodology</b></h3>
+						<p>
+							<b>Stocks</b> = P/E driven identity <br>
+							<b>Stock sector ETFs</b> = Use S&P 500 model as baseline, then use last 12 months relative
+							performance and
+							assume
+							either relative performance continues or reverts <br>
+							<b>Gold</b> = regressions model with real interest rates as predictor <br>
+							<b>Commodities</b> = regressions model with inflation expectations as predictor
+						</p>
+					</div>
+                </section>
+                <section>
+					<div class="content">
+						<h3><b>S&P 500 Model</b></h3>
+						<p>
+							<u>Fair Value</u> = <b>P/E Ratio</b>*<b>2021 Earnings</b><br>
+							<u>P/E Ratio</u> = 1 / (<b>US10yr treasury yield</b> + <b>Equity Risk Premium</b>)<br>
+							<u>Equity Risk Premium</u> can be thought of as the excess return over the risk-free rate
+							(10yr yield). Read more <a style="color:blue"
+								href="https://www.investopedia.com/terms/e/equityriskpremium.asp#:~:text=The%20term%20equity%20risk%20premium,risk%20in%20a%20particular%20portfolio.">here</a>.
+						</p>
+					</div>
+				</section>
+				<section>
+					<div class="content">
+						<h3><b>Gold Scatter</b></h3>
+						<div class="image" id="gold_chart" style="width: 100%; height: 250px;"></div>
+					</div>
+				</section>
+				<section>
+					<div class="content">
+						<h3><b>Commodities Scatter</b></h3>
+						<div class="image" id="commods_chart" style="width: 100%; height: 250px;"></div>
+					</div>
+				</section>
 
-
-			</div>
 		</div>
 	</section>
 
@@ -119,17 +133,21 @@
 		</div>
 	</footer>
 
+
 	<!-- Load AWS required packages -->
 	<script src="assets/js/vendor/jquery.min.js"></script>
 	<script src="assets/js/vendor/aws-cognito-sdk.min.js"></script>
 	<script src="assets/js/vendor/amazon-cognito-identity.min.js"></script>
 	<script src="assets/js/config.js"></script>
 	<script src="assets/js/cognito-auth.js"></script>
+
 	<!-- Scripts -->
 	<script src="assets/js/browser.min.js"></script>
 	<script src="assets/js/breakpoints.min.js"></script>
 	<script src="assets/js/util.js"></script>
 	<script src="assets/js/main.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script src="assets/js/methodology.js"></script>
 
 </body>
 
