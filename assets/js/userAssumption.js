@@ -187,9 +187,7 @@ var deleteScenario;
                 commods_fv_func();
                 cash_fv_func();
                 modelRun();
-                drawContext();
                 slider_function(); //Reset slider bubbles
-
             }
         }
     }
