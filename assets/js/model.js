@@ -90,7 +90,6 @@ function setInitialAssumption(assumption, colNum, initial, round) {
         if (data_raw.getValue(data_raw.getNumberOfRows() - 1, colNum) != null) {
             var nominal_last_val = data_raw.getValue(data_raw.getNumberOfRows() - 1, colNum)
         } else {
-            console.log(data_raw)
             for (jj = data_raw.getNumberOfRows() - 2; jj > 0; jj--) {
                 if (data_raw.getValue(jj, colNum) != null) {
                     var nominal_last_val = data_raw.getValue(jj, colNum)
