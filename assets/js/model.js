@@ -87,7 +87,17 @@ function setInitialAssumption(assumption, colNum, initial, round) {
     var label = data_raw.getColumnLabel(colNum)
     // Set starting value
     if (initial === 'last') {
-        var nominal_last_val = data_raw.getValue(data_raw.getNumberOfRows() - 1, colNum)
+        if (data_raw.getValue(data_raw.getNumberOfRows() - 1, colNum) != null) {
+            var nominal_last_val = data_raw.getValue(data_raw.getNumberOfRows() - 1, colNum)
+        } else {
+            console.log(data_raw)
+            for (jj = data_raw.getNumberOfRows() - 2; jj > 0; jj--) {
+                if (data_raw.getValue(jj, colNum) != null) {
+                    var nominal_last_val = data_raw.getValue(jj, colNum)
+                    break;
+                }
+            }
+        }
     } else if (initial === 'average') {
         //Find average of JSON data
         var sum = 0
@@ -150,7 +160,7 @@ function initialConditions() {
 
 function spx_fv_func() {
     // S&P500 FV - Inputs: earnings, treasury yield, ERP
-    var risk_ass = parseFloat(document.getElementById('risk_ass').value)
+    // var risk_ass = parseFloat(document.getElementById('risk_ass').value)
     // var erp_ass = risk_ass * data_raw.getValue(1, 11) + data_raw.getValue(0, 11)
     var erp_ass = parseFloat(document.getElementById('erp_ass').value)
 
@@ -538,23 +548,23 @@ function drawContext() {
     };
     contextChart(0, 5, inf_options, 'LineChart', 'inf_chart');
     //Gold/real rates scatter
-    gold_options = {
-        title: 'Gold/Real 10yr Yield',
-        hAxis: { title: 'Real 10yr Yield', format: 'percent' },
-        vAxis: { title: 'Gold ($/ounce)', format: 'short' },
-        legend: 'none',
-        chartArea: { 'width': '70%', 'height': '70%' }
-    }
-    contextChart(6, 4, gold_options, 'ScatterChart', 'gold_chart', '2019-11-01');
+    // gold_options = {
+    //     title: 'Gold/Real 10yr Yield',
+    //     hAxis: { title: 'Real 10yr Yield', format: 'percent' },
+    //     vAxis: { title: 'Gold ($/ounce)', format: 'short' },
+    //     legend: 'none',
+    //     chartArea: { 'width': '70%', 'height': '70%' }
+    // }
+    // contextChart(6, 4, gold_options, 'ScatterChart', 'gold_chart', '2019-11-01');
     //Commodities/Infl Exp scatter
-    commods_options = {
-        title: 'Commodities/Inflation Expectations',
-        hAxis: { title: 'Inflation Expectations', format: 'percent' },
-        vAxis: { title: 'Commodities ($DBC)', format: 'short' },
-        legend: 'none',
-        chartArea: { 'width': '70%', 'height': '70%' }
-    }
-    contextChart(5, 12, commods_options, 'ScatterChart', 'commods_chart', '2020-05-01');
+    // commods_options = {
+    //     title: 'Commodities/Inflation Expectations',
+    //     hAxis: { title: 'Inflation Expectations', format: 'percent' },
+    //     vAxis: { title: 'Commodities ($DBC)', format: 'short' },
+    //     legend: 'none',
+    //     chartArea: { 'width': '70%', 'height': '70%' }
+    // }
+    // contextChart(5, 12, commods_options, 'ScatterChart', 'commods_chart', '2020-05-01');
 
 }
 
