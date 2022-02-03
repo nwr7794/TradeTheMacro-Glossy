@@ -163,9 +163,10 @@ function spx_fv_func() {
     // var erp_ass = risk_ass * data_raw.getValue(1, 11) + data_raw.getValue(0, 11)
     var erp_ass = parseFloat(document.getElementById('erp_ass').value)
 
-    var earnings_2019 = 139.47; //Hardcoding in 2019 earnings right now
+    var spxEarnings = data_raw.getValue(data_raw.getNumberOfRows() - 1, 7);
+    
     var earnings_growth_ass = (1 + parseFloat(document.getElementById('earnings_ass').value)) ** parseFloat(document.getElementById('time_ass').value)
-    var earnings_abs_ass = earnings_2019 * earnings_growth_ass
+    var earnings_abs_ass = spxEarnings * earnings_growth_ass
     var yield_ass = parseFloat(document.getElementById('yield_ass').value)
     spx_fv = 1 / (yield_ass + erp_ass) * earnings_abs_ass
     spx_last = data_raw.getValue(data_raw.getNumberOfRows() - 1, 1)
