@@ -301,7 +301,7 @@ function modelRun() {
 
     ////// Add in etfs here? (Top 5 only)
     if (etf_fv.length != 0) {
-        for (j = 0; j < 5; j++) {
+        for (j = 0; j < etf_fv.length; j++) {
             output_data.push([
                 etf_fv[j][0],
                 etf_fv[j][2],
