@@ -42,7 +42,7 @@ function drawContext(){
     // Get date from 2 years ago
     var today = new Date();
     var dd = today.getDate();
-    dd = dd - 730;
+    dd = dd - 365;
     dd = dd.toString();
 
 
