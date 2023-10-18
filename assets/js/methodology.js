@@ -39,6 +39,13 @@ function drawContext(){
         // console.log(context_view)
     }
 
+    // Get date from 2 years ago
+    var today = new Date();
+    var dd = today.getDate();
+    dd = dd - 730;
+    dd = dd.toString();
+
+
     //Gold/real rates scatter
     gold_options = {
         title: 'Gold/Real 10yr Yield',
@@ -47,7 +54,7 @@ function drawContext(){
         legend: 'none',
         chartArea: { 'width': '70%', 'height': '70%' }
     }
-    contextChart(6, 4, gold_options, 'ScatterChart', 'gold_chart', '2019-11-01');
+    contextChart(6, 4, gold_options, 'ScatterChart', 'gold_chart', dd);
     //Commodities/Infl Exp scatter
     commods_options = {
         title: 'Commodities/Inflation Expectations',
@@ -56,6 +63,6 @@ function drawContext(){
         legend: 'none',
         chartArea: { 'width': '70%', 'height': '70%' }
     }
-    contextChart(5, 12, commods_options, 'ScatterChart', 'commods_chart', '2020-05-01');
+    contextChart(5, 12, commods_options, 'ScatterChart', 'commods_chart', dd);
 
 }
